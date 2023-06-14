@@ -1,12 +1,12 @@
 'use client'
-import { useRouter } from "next/navigation";
+import { redirect } from "next/navigation";
 export default function Home() {
 
-  const router = useRouter();
-  router.push('/login')
-  return (
-    <main>
+  redirect('/login')
 
+  return (
+    <main className="text-white">
+      aa
     </main>
   )
 }
