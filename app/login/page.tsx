@@ -2,16 +2,21 @@
 import Logo from "@/components/Logo";
 import { useRouter } from "next/navigation";
 import { GitHub } from "react-feather";
-import { signIn } from 'next-auth/react'
+import { signIn, useSession } from 'next-auth/react'
 
 
 export default function Login() {
   const router = useRouter();
+  const { data } = useSession()
 
   const signin = async (type: string) => {
     await signIn(type, {
-      redirect: false,
+      redirect: true,
     })
+  }
+
+  if (data) {
+    router.push('/boards')
   }
 
   return (

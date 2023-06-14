@@ -1,6 +1,6 @@
 'use client'
 
-import { useSession } from "next-auth/react"
+import { signOut, useSession } from "next-auth/react"
 
 export default function Boards() {
   const { data } = useSession({
@@ -10,6 +10,9 @@ export default function Boards() {
     <div>
       boards route
       {JSON.stringify(data)}
+      <button className="p-2 rounded-lg bg-teal-600 text-white" onClick={() => signOut()}>
+        Logout
+      </button>
     </div>
   )
 }
