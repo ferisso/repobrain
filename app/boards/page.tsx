@@ -4,7 +4,7 @@ import { signOut, useSession } from "next-auth/react"
 
 export default function Boards() {
   const { data } = useSession({
-    required: false
+    required: true
   })
   if (data)
     console.log(data)
