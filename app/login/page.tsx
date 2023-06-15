@@ -3,6 +3,7 @@ import Logo from "@/components/Logo";
 import { useRouter } from "next/navigation";
 import { GitHub } from "react-feather";
 import { signIn, useSession } from 'next-auth/react'
+import { toast } from "react-toastify";
 
 
 export default function Login() {
@@ -25,7 +26,10 @@ export default function Login() {
         <Logo height="65" className="mb-2" color="rgb(39, 39, 42)" />
         <input type="text" placeholder="Insira o seu email" className="w-full border box-border border-zinc-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none" />
         <input type="password" placeholder="Insira a sua senha" className="w-full border box-border border-zinc-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none" />
-        <button className="w-full p-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-all outlined-none text-sm">
+        <button
+          className="w-full p-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-all outlined-none text-sm"
+          onClick={() => toast.error("Usuário ou senha inválidos")}
+        >
           Entrar
         </button>
         <p className="text-zinc-400 text-xs">ou</p>
