@@ -27,14 +27,14 @@ export default function Login() {
         <input type="text" placeholder="Insira o seu email" className="w-full border box-border border-zinc-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none" />
         <input type="password" placeholder="Insira a sua senha" className="w-full border box-border border-zinc-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none" />
         <button
-          className="w-full p-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-all outlined-none text-sm"
+          className="w-full p-2 h-[42px] bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-all outlined-none text-sm"
           onClick={() => toast.error("Usuário ou senha inválidos")}
         >
           Entrar
         </button>
         <p className="text-zinc-400 text-xs">ou</p>
         <button
-          className="w-full p-2 bg-zinc-800 hover:bg-zinc-700 transition-all text-white rounded-lg flex gap-2 justify-center items-center outlined-none text-sm"
+          className="w-full p-2 h-[42px] bg-zinc-800 hover:bg-zinc-700 transition-all text-white rounded-lg flex gap-2 justify-center items-center outlined-none text-sm"
           onClick={() => signin('github')}
         >
           <GitHub size={20} />
