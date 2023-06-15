@@ -15,12 +15,12 @@ export default function Boards() {
           <div className="rounded-full h-16 w-16 bg-slate-600">
             <img src={data?.user?.image || ''} alt="Clients image" className="h-full rounded-full" />
           </div>
-          <h2 className="text-zinc-800 font-semi text-xl">
+          <h2 className="text-zinc-800 font-light text-xs">
             Seja bem-vindo,
-            <span className="text-teal-500 ml-1">
-              {data?.user?.name}
-            </span>
           </h2>
+          <span className="text-teal-500 font-semi ml-1 text-xl">
+            {data?.user?.name}
+          </span>
           <button className="p-2 rounded-lg bg-teal-600 text-white font-light text-sm" onClick={() => signOut()}>
             Logout
           </button>
