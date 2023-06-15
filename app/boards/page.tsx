@@ -16,9 +16,9 @@ export default function Boards() {
             <img src={data?.user?.image || ''} alt="Clients image" className="h-full rounded-full" />
           </div>
           <h2 className="text-zinc-800 font-light text-xs">
-            Seja bem-vindo,
+            Seja bem-vindo
           </h2>
-          <span className="text-teal-500 font-bold ml-1 text-xl">
+          <span className="text-teal-500 font-bold mb-2 text-xl">
             {data?.user?.name}
           </span>
           <button className="p-2 rounded-lg bg-teal-600 text-white font-light text-sm" onClick={() => signOut()}>
