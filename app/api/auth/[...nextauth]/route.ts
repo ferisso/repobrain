@@ -19,7 +19,7 @@ const handler = NextAuth({
   callbacks: {
     session: async ({ session, token }: any) => {
       if (session?.user) {
-        session.user.provider = token.provider
+        session.user.provider = token.providers
       }
       return session;
     },
@@ -29,6 +29,9 @@ const handler = NextAuth({
         token.provider = account?.provider;
       }
       return token;
+    },
+    async redirect({ url, baseUrl }) {
+      return `${baseUrl}/boards`
     },
   }
 });
