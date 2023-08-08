@@ -1,12 +1,20 @@
 'use client'
 
-import BoardsSideMenu from "@/components/BoardsSideMenu"
+import AsideModulesMenu, { IAsideModulesMenu } from "@/components/AsideModulesMenu"
+import { GearSix, Kanban, UsersFour } from "@phosphor-icons/react"
 import { Plus } from "react-feather"
 
 export default function Boards() {
+
+  const asideMenu: IAsideModulesMenu[]  = [
+    { icon: <Kanban size={20} />, name: 'Projects', isActive: true },
+    { icon: <UsersFour size={20} />, name: 'Team', isActive: false },
+    { icon: <GearSix size={20} />, name: 'Settings', isActive: false },
+  ]
+
   return (
-    <div className="grid flex-1 flex-col gap-4 grid-cols-[160px_1fr]">
-      <BoardsSideMenu />
+    <div className="grid flex-1 flex-col gap-6 grid-cols-[160px_1fr]">
+      <AsideModulesMenu items={asideMenu} />
       <div className="flex w-full flex-1 flex-col overflow-hidden">
         <div className="flex justify-between items-center">
         <span>
