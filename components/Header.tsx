@@ -30,7 +30,7 @@ export default function Header() {
   }, [routerName])
 
   return (
-    <header className="h-16 w-full border-b bg-whiteborder-zinc-200 sticky top-0 z-50">
+    <header className="h-14 w-full border-b bg-whiteborder-zinc-200 sticky top-0 z-50">
       <div className="flex justify-between items-center px-14 h-full container mx-auto">
         <div className="flex gap-10 items-center text-zinc-800/70 text-xs font-light">
           <button>
@@ -38,7 +38,7 @@ export default function Header() {
           </button>
           {
             routes.map((route, key) =>
-              <Link href={route.path} key={key} className={ route.isActive ? 'font-semibold text-teal-500' : 'font-normal hover:text-zinc-800' }>
+              <Link href={route.path} key={key} className={ route.isActive ? 'font-medium text-teal-500' : 'font-normal hover:text-zinc-800' }>
                 {route.name}
               </Link>
             )

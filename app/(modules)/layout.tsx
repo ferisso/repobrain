@@ -1,4 +1,5 @@
 'use client'
+import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import MainLoader from "@/components/MainLoader"
 import { useSession } from "next-auth/react"
@@ -18,6 +19,7 @@ export default function Layout({
         <div className="container mx-auto px-14 py-4">
           {children}
         </div>
+        <Footer />
       </>
     )
     : <MainLoader />
