@@ -1,8 +1,9 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client'
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { FolderDashed, MapTrifold } from "@phosphor-icons/react"
 import { Plus } from "react-feather"
-  
+
 export default function Boards() {
   return (
     <>
@@ -11,10 +12,17 @@ export default function Boards() {
           <h2 className="text-3xl text-zinc-900/80 font-semibold">Boards</h2>
           <p className="text-zinc-500 font-light">Select the project to see the board</p>
         </span>
-        <button className="flex items-center justify-center gap-1 text-white bg-teal-500 py-2 px-4 rounded-md text-xs">
-          <Plus size={18} />
-          New board
-        </button>
+        <Select>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Theme" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="">None</SelectItem>
+            <SelectItem value="light">Repobrain</SelectItem>
+            <SelectItem value="dark">E-Parking</SelectItem>
+            <SelectItem value="system">NLW</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
       <div className="mt-4 w-full h-full min-h-[400px] flex justify-center items-center flex-col gap-3 border border-dashed text-center p-4 rounded-md">
         <div className="h-16 w-16 rounded-full flex justify-center items-center bg-zinc-100">
