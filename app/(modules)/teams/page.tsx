@@ -9,7 +9,7 @@ export default function Boards() {
       <div className="flex justify-between items-center">
         <span>
           <h2 className="text-3xl text-zinc-900/80 font-semibold">Teams</h2>
-          <p className="text-zinc-500 font-light">Create or manage your Teams</p>
+          <p className="text-zinc-500 font-light">Create or manage your teams</p>
         </span>
         <button className="flex items-center justify-center gap-1 text-white bg-teal-500 py-2 px-4 rounded-md text-xs">
           <Plus size={18} />

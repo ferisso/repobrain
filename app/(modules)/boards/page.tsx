@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
-import { FolderDashed, MapTrifold } from "@phosphor-icons/react"
+import { MapTrifold } from "@phosphor-icons/react"
 import { Plus } from "react-feather"
 
 export default function Boards() {
@@ -14,10 +14,9 @@ export default function Boards() {
         </span>
         <Select>
           <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="Theme" />
+            <SelectValue placeholder="None" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="">None</SelectItem>
             <SelectItem value="light">Repobrain</SelectItem>
             <SelectItem value="dark">E-Parking</SelectItem>
             <SelectItem value="system">NLW</SelectItem>
@@ -28,7 +27,7 @@ export default function Boards() {
         <div className="h-16 w-16 rounded-full flex justify-center items-center bg-zinc-100">
           <MapTrifold size={32} weight="thin" />
         </div>
-        <p>No Boards created</p>
+        <p>No boards created</p>
         <p className="font-light text-xs text-zinc-500">
           You don't have any boards yet. Starting creating one
         </p>
