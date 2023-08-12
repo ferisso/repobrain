@@ -1,6 +1,6 @@
 'use client'
 /* eslint-disable react-hooks/exhaustive-deps */
-import { ChartLine, Folder, GearSix, Kanban, UsersFour } from "@phosphor-icons/react";
+import { ChartLine, Folder, Gear, Kanban, UsersFour } from "@phosphor-icons/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -20,7 +20,7 @@ export default function AsideModulesMenu() {
     { icon: <ChartLine size={20} />, name: 'Reports', path: '/reports', isActive: false },
     { icon: <Folder size={20} />, name: 'Projects', path: '/projects', isActive: false },
     { icon: <UsersFour size={20} />, name: 'Teams', path: '/teams', isActive: false },
-    { icon: <GearSix size={20} />, name: 'Settings', path: '/settings', isActive: false },
+    { icon: <Gear size={20} />, name: 'Settings', path: '/settings', isActive: false },
   ])
 
   const mapMenu = () => {

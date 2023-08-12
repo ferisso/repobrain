@@ -5,6 +5,7 @@ import { GitHub } from "react-feather";
 import { signIn, useSession } from 'next-auth/react'
 import { toast } from "react-toastify";
 import { SubmitHandler, useForm } from "react-hook-form";
+import HandleLoginService from "@/service/HandleLoginService";
 
 interface ILoginForm {
   email: string;
@@ -18,13 +19,14 @@ export default function Login() {
   const { register, handleSubmit, formState: { errors } } = useForm<ILoginForm>();
 
   const onSubmit: SubmitHandler<ILoginForm> = (data, a) => {
-    console.log(data);
-    toast.error("Usuário ou senha inválidos")
+    signin('credentials', data)
   }
 
-  const signin = async (type: string) => {
+  const signin = async (type: string, data?: ILoginForm) => {
     await signIn(type, {
       redirect: true,
+      email: data?.email,
+      password: data?.password
     })
   }
 
