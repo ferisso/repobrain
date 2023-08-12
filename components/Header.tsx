@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { User } from "react-feather";
 
 export default function Header() {
   const { data } = useSession()
@@ -31,8 +32,12 @@ export default function Header() {
             )
           }
         </div>
-        <button className="rounded-full h-8 w-8 overflow-hidden" onClick={() => signOut()}>
-          <Image src={data?.user?.image || ''} alt="Clients image" width={32} height={32}/>
+        <button className="rounded-full h-8 w-8 overflow-hidden border flex items-center justify-center" onClick={() => signOut()}>
+          {
+            data?.user?.image 
+              ? <Image src={data?.user?.image || ''} alt="Clients image" width={32} height={32}/>
+              : <User size={18} className="text-zinc-500" />
+          }
         </button> 
       </div>
     </header>

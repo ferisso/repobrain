@@ -5,7 +5,8 @@ import { GitHub } from "react-feather";
 import { signIn, useSession } from 'next-auth/react'
 import { toast } from "react-toastify";
 import { SubmitHandler, useForm } from "react-hook-form";
-import HandleLoginService from "@/service/HandleLoginService";
+import { useState } from "react";
+import { SpinnerGap } from "@phosphor-icons/react";
 
 interface ILoginForm {
   email: string;
@@ -15,19 +16,35 @@ interface ILoginForm {
 export default function Login() {
   const router = useRouter();
   const { data } = useSession();
+  const [loadingCredentials, setLoadingCredentials] = useState(false)
+  const [loadingGithub, setLoadingGithub] = useState(false)
 
   const { register, handleSubmit, formState: { errors } } = useForm<ILoginForm>();
 
   const onSubmit: SubmitHandler<ILoginForm> = (data, a) => {
-    signin('credentials', data)
+    signin('credentials', data);
   }
 
   const signin = async (type: string, data?: ILoginForm) => {
-    await signIn(type, {
-      redirect: true,
+    if (type === "credentials") {
+      setLoadingCredentials(true);
+    }
+
+    if (type === "github") {
+      setLoadingGithub(true);
+    }
+
+    const res = await signIn(type, {
+      redirect: false,
       email: data?.email,
       password: data?.password
-    })
+    });
+
+    if (res?.error) {
+      toast.error("Usuário ou senha inválidos")
+      setLoadingCredentials(false);
+      setLoadingGithub(false);
+    }
   }
 
   if (data) {
@@ -61,19 +78,29 @@ export default function Login() {
             {errors.password && <p className="font-light text-red-500 text-xs ml-2 mt-1">{errors.password.message}</p>}
           </div>
           <button
-            className="w-full p-2 h-[42px] bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-all outlined-none text-sm"
+            className="w-full p-2 h-[42px] bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-all outlined-none text-sm flex justify-center items-center"
+            disabled={loadingGithub || loadingCredentials}
             type="submit"
           >
-            Entrar
+            {
+              loadingCredentials ? <SpinnerGap className="animate-spin" size={20} />  : "Entrar"
+            }
           </button>
         </form>
         <p className="text-zinc-400 text-xs">ou</p>
         <button
           className="w-full p-2 h-[42px] bg-zinc-800 hover:bg-zinc-700 transition-all text-white rounded-lg flex gap-2 justify-center items-center outlined-none text-sm"
+          disabled={loadingGithub || loadingCredentials}
           onClick={() => signin('github')}
         >
-          <GitHub size={20} />
-          Entrar com o Github
+          { 
+            loadingGithub 
+              ? <SpinnerGap size={20} className="animate-spin" /> 
+              : <>
+                  <GitHub size={20} />
+                  Entrar com o Github
+                </>
+          }
         </button>
       </div>
       <p className="mt-4 text-xs text-zinc-500">
