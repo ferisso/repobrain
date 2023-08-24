@@ -42,17 +42,14 @@ const handler = NextAuth({
   callbacks: {
     session: async ({ session, token }: any) => {
       if (session?.user) {
-        session.user.provider = token.providers
-        // const userDb = await verifyUserExists(session.user);
-        // session.user.id = userDb.id;
-        // session.user.provider = token.provider
+        session.user = { ...token.access_token, ...session?.user}
       }
       return session;
     },
     jwt: async ({ user, token, account }: any) => {
       if (user) {
         token.uid = user.id;
-        token.provider = account?.provider;
+        token.access_token = account;
       }
       return token;
     },
