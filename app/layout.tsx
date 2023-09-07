@@ -6,6 +6,8 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { Suspense } from 'react'
 import MainLoader from '@/components/MainLoader'
+import { QueryClientProvider } from 'react-query'
+import { queryClient } from '@/service/QueryService'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -18,10 +20,12 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <Suspense fallback={<MainLoader />}>
-          <ToastContainer />
-          <SessionProvider>
-            {children}
-          </SessionProvider>
+          <QueryClientProvider client={queryClient}>
+            <ToastContainer />
+            <SessionProvider>
+              {children}
+            </SessionProvider>
+          </QueryClientProvider>
         </Suspense>
       </body>
     </html>

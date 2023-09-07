@@ -1,11 +1,8 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client'
-import DialogRegisterBoard from "@/components/DialogRegisterBoard"
-import { DialogFooter, DialogHeader } from "@/components/ui/dialog"
+import DialogCreateProject from "@/components/DialogCreateProject"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { MapTrifold } from "@phosphor-icons/react"
-import { getSession, useSession } from "next-auth/react"
-import { useEffect } from "react"
 import { Plus } from "react-feather"
 
 export default function Boards() {
@@ -24,7 +21,7 @@ export default function Boards() {
             <SelectItem value="light">Repobrain</SelectItem>
             <SelectItem value="dark">E-Parking</SelectItem>
             <SelectItem value="system">NLW</SelectItem>
-            <DialogRegisterBoard />
+            <DialogCreateProject />
           </SelectContent>
         </Select>
       </div>

@@ -5,6 +5,6 @@ export type routes = '/users' | '/login'
 
 export interface IRequestApiService {
   method: methods,
-  route: routes,
+  route: routes | string,
   body?: Object,
 }
