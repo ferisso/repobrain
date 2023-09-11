@@ -6,11 +6,8 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import APIService from "@/service/APIService";
 import { createTeam } from "@/service/TeamService";
+import { ITeams } from "@/types/Team";
 
-interface ICreateTeam {
-  name: string
-  description?: string
-}
 
 interface DialogCreateTeamsProps {
   children: React.ReactNode,
@@ -18,9 +15,9 @@ interface DialogCreateTeamsProps {
 }
 
 export default function DialogCreateTeams({ children, refreash }: DialogCreateTeamsProps) {
-  const { register, handleSubmit, formState: { errors } } = useForm<ICreateTeam>();
+  const { register, handleSubmit, formState: { errors } } = useForm<ITeams>();
 
-  const onSubmit: SubmitHandler<ICreateTeam> = async (data) => {
+  const onSubmit: SubmitHandler<ITeams> = async (data) => {
     await createTeam(data)
     refreash && refreash()
   }
