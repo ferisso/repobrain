@@ -81,7 +81,7 @@ export default function DialogCreateProject({ children }: DialogCreateProjectPro
       team_id: selectedTeam
     }
     await createProject(newProject)
-    .finally(() => setButtonLoader(false))
+      .finally(() => setButtonLoader(false))
   }
 
   useEffect(() => {
@@ -137,7 +137,7 @@ export default function DialogCreateProject({ children }: DialogCreateProjectPro
             className="text-white bg-teal-500 py-2 px-4 rounded-md text-xs flex justify-center min-w-[115px]"
             onClick={submitForm}
           >
-            { buttonLoader ? <Spinner size={16} className="animate-spin" /> : 'Create project' }
+            {buttonLoader ? <Spinner size={16} className="animate-spin" /> : 'Create project'}
           </button>
         </DialogFooter>
       </DialogContent>
