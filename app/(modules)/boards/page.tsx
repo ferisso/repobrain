@@ -21,7 +21,11 @@ export default function Boards() {
             <SelectItem value="light">Repobrain</SelectItem>
             <SelectItem value="dark">E-Parking</SelectItem>
             <SelectItem value="system">NLW</SelectItem>
-            <DialogCreateProject />
+            <DialogCreateProject>
+              <button className="px-7 py-2 w-full rounded-sm border-t text-sm hover:bg-zinc-100 text-teal-500">
+                Create a project
+              </button>
+            </DialogCreateProject>
           </SelectContent>
         </Select>
       </div>

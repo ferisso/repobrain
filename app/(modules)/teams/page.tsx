@@ -1,15 +1,12 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client'
 import { UsersThree } from "@phosphor-icons/react"
-import { MoreVertical, Plus, Trash } from "react-feather"
 import DialogCreateTeams from "@/components/DialogCreateTeams"
-import APIService from "@/service/APIService"
-import { useSession } from "next-auth/react"
-import { useMutation, useQuery } from "react-query"
+import { useQuery } from "react-query"
 import TeamListCard from "@/components/TeamListCard"
 import { ITeams } from "@/types/Team"
 import { getTeams } from "@/service/TeamService"
-import { useEffect, useState } from "react"
+import { Plus } from "@phosphor-icons/react"
 
 export default function Teams() {
   const { data: teams, refetch, isLoading } = useQuery<ITeams[]>('teams', async () => {
@@ -23,7 +20,12 @@ export default function Teams() {
           <h2 className="text-3xl text-zinc-900/80 font-semibold">Teams</h2>
           <p className="text-zinc-500 font-light">Create or manage your teams</p>
         </span>
-        <DialogCreateTeams refreash={() => refetch()} />
+        <DialogCreateTeams refreash={() => refetch()}>
+          <button className="flex items-center justify-center gap-1 text-white bg-teal-500 py-2 px-4 rounded-md text-xs">
+            <Plus size={18} />
+            New team
+          </button>
+        </DialogCreateTeams>
       </div>
       {
         teams?.length ?

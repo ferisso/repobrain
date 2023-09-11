@@ -1,5 +1,5 @@
 'use client'
-import { useEffect, useState } from "react"
+import { ReactNode, useEffect, useState } from "react"
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogFooter, DialogHeader, DialogTrigger } from "./ui/dialog"
 import { Plus } from "@phosphor-icons/react"
 import { SubmitHandler, useForm } from "react-hook-form";
@@ -13,10 +13,11 @@ interface ICreateTeam {
 }
 
 interface DialogCreateTeamsProps {
+  children: React.ReactNode,
   refreash?: () => void
 }
 
-export default function DialogCreateTeams({ refreash }: DialogCreateTeamsProps) {
+export default function DialogCreateTeams({ children, refreash }: DialogCreateTeamsProps) {
   const { register, handleSubmit, formState: { errors } } = useForm<ICreateTeam>();
 
   const onSubmit: SubmitHandler<ICreateTeam> = async (data) => {
@@ -27,10 +28,7 @@ export default function DialogCreateTeams({ refreash }: DialogCreateTeamsProps) 
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="flex items-center justify-center gap-1 text-white bg-teal-500 py-2 px-4 rounded-md text-xs">
-          <Plus size={18} />
-          New team
-        </button>
+       {children}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

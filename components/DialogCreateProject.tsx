@@ -4,12 +4,14 @@ import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogFooter, Di
 import { useSession } from "next-auth/react"
 import { Check } from "react-feather"
 
-export default function DialogCreateProject() {
+interface DialogCreateProjectProps {
+  children: React.ReactNode;
+}
+
+export default function DialogCreateProject({ children }: DialogCreateProjectProps) {
   const [repos, setRepos] = useState<Array<any>>()
   const [selectedRepo, setSelectedRepo] = useState<any>()
   const session = useSession()
-
-  console.log(session)
 
   const getRepos = async () => {
     const accessToken = session.data?.user.access_token
@@ -34,9 +36,7 @@ export default function DialogCreateProject() {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <button className="px-7 py-2 w-full rounded-sm border-t text-sm hover:bg-zinc-100 text-teal-500">
-          Create a project
-        </button>
+        { children }
       </DialogTrigger>
       <DialogContent className="sm:max-w-[625px]">
         <DialogHeader>

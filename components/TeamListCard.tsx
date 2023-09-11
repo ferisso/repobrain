@@ -35,7 +35,6 @@ export default function TeamListCard({ team, refreash, isLoading }: TeamListCard
     <div
       className="w-full border rounded-md p-3 text-sm flex justify-between min-h-[64px] items-center"
     >
-
       <div className="flex flex-col gap-1">
         {
           isLoading ?
