@@ -18,7 +18,7 @@ export default async function HandleUserIdService(data: IHandleUserId) {
       returnedData = res.data
       return returnedData
     }
-    returnedData = (await createUser(data)).data
+    returnedData = (await createUser(data))?.data
   })
   .catch((err) => console.log(err))
   return returnedData

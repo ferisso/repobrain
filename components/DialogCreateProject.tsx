@@ -11,9 +11,10 @@ import { Spinner } from "@phosphor-icons/react"
 
 interface DialogCreateProjectProps {
   children: React.ReactNode;
+  refreash?: () => void
 }
 
-export default function DialogCreateProject({ children }: DialogCreateProjectProps) {
+export default function DialogCreateProject({ children, refreash }: DialogCreateProjectProps) {
   const [repos, setRepos] = useState<Array<any>>()
   const [selectedRepo, setSelectedRepo] = useState<any>()
   const [selectedTeam, setSelectedTeam] = useState<string>()
@@ -81,7 +82,10 @@ export default function DialogCreateProject({ children }: DialogCreateProjectPro
       team_id: selectedTeam
     }
     await createProject(newProject)
-      .finally(() => setButtonLoader(false))
+      .finally(() => {
+        setButtonLoader(false)
+        refreash && refreash()
+      })
   }
 
   useEffect(() => {

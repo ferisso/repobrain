@@ -8,7 +8,7 @@ export async function getTeams() {
     method: 'get',
     route: '/teams/' + id
   })
-  return teams.data.reverse()
+  return teams?.data.reverse()
 }
 
 export async function createTeam(team: ITeams) {

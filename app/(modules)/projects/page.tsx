@@ -9,7 +9,7 @@ import { Plus } from "react-feather"
 import { useQuery } from "react-query"
 
 export default function Projects() {
-  const { data: projects, isLoading } = useQuery<IProjects[]>('projects', async () => {
+  const { data: projects, isLoading, refetch } = useQuery<IProjects[]>('projects', async () => {
     return await getProjects()
   })
   return (
@@ -19,7 +19,7 @@ export default function Projects() {
           <h2 className="text-3xl text-zinc-900/80 font-semibold">Projects</h2>
           <p className="text-zinc-500 font-light">Create or manage your projects</p>
         </span>
-        <DialogCreateProject>
+        <DialogCreateProject refreash={refetch}>
           <button className="flex items-center justify-center gap-1 text-white bg-teal-500 py-2 px-4 rounded-md text-xs">
             <Plus size={18} />
             New project
@@ -27,10 +27,10 @@ export default function Projects() {
         </DialogCreateProject>
       </div>
       {
-        projects ? (
-          <div className="mt-4 w-full h-full min-h-[400px] flex justify-center items-center flex-col gap-3 border text-center p-4 rounded-md">
+        projects && projects.length ? (
+          <div className="mt-4 w-full h-full min-h-[400px] flex items-center flex-col gap-3 border text-center p-4 rounded-md">
             {
-              projects.map(project => <ProjectListCard project={project} key={project.id} />)
+              projects.map(project => <ProjectListCard project={project} key={project.id} refreash={refetch} />)
             }
           </div>
         )
