@@ -28,7 +28,7 @@ export default function Projects() {
       </div>
       {
         projects && projects.length ? (
-          <div className="mt-4 w-full h-full min-h-[400px] flex items-center flex-col gap-3 border text-center p-4 rounded-md">
+          <div className="mt-4 w-full h-full min-h-[400px] flex items-center flex-col gap-3 border text-center p-2 rounded-md">
             {
               projects.map(project => <ProjectListCard project={project} key={project.id} refreash={refetch} />)
             }

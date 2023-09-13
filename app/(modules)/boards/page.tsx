@@ -1,6 +1,7 @@
 /* eslint-disable react/no-unescaped-entities */
 'use client'
 import DialogCreateProject from "@/components/DialogCreateProject"
+import DropdownProjects from "@/components/DropdownProjects"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { MapTrifold } from "@phosphor-icons/react"
 import { Plus } from "react-feather"
@@ -13,21 +14,7 @@ export default function Boards() {
           <h2 className="text-3xl text-zinc-900/80 font-semibold">Boards</h2>
           <p className="text-zinc-500 font-light">Select the project to see the board</p>
         </span>
-        <Select>
-          <SelectTrigger className="w-[180px]">
-            <SelectValue placeholder="None" />
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="light">Repobrain</SelectItem>
-            <SelectItem value="dark">E-Parking</SelectItem>
-            <SelectItem value="system">NLW</SelectItem>
-            <DialogCreateProject>
-              <button className="px-7 py-2 w-full rounded-sm border-t text-sm hover:bg-zinc-100 text-teal-500">
-                Create a project
-              </button>
-            </DialogCreateProject>
-          </SelectContent>
-        </Select>
+       <DropdownProjects />
       </div>
       <div className="mt-4 w-full h-full min-h-[400px] flex justify-center items-center flex-col gap-3 border border-dashed text-center p-4 rounded-md">
         <div className="h-16 w-16 rounded-full flex justify-center items-center bg-zinc-100">
