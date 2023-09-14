@@ -73,4 +73,13 @@
   body {
     @apply bg-background text-foreground;
   }
+
+  .board-col-title {
+    @apply w-full text-left py-2 px-3 rounded-md bg-zinc-50 text-sm border-zinc-100 border text-zinc-500 font-light
+  }
+}
+
+.react-grid-item.react-grid-placeholder {
+  background-color: rgb(20 184 166) !important;
+  border-radius: 6px;
 }
