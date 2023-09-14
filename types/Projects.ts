@@ -1,0 +1,1 @@
+export type IProjects = any // TODO: Create type

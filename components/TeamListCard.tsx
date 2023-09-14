@@ -20,7 +20,7 @@ export default function TeamListCard({ team, refreash, isLoading }: TeamListCard
   const deletingTeam = (id: string) => {
     deleteTeam(id)
       .then(res => {
-        if (res.data) {
+        if (res?.data) {
           toast.success('Team deleted')
         }
         refreash && refreash()

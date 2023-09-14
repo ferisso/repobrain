@@ -11,5 +11,5 @@ export default async function HandleLoginService(data: IHandleLoginService) {
     route: "/login",
     body: data
   })
-  return res.data
+  return res?.data
 }

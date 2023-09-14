@@ -1,3 +1,4 @@
+import { ITeams } from "@/types/Team"
 import APIService from "./APIService"
 
 
@@ -7,10 +8,10 @@ export async function getTeams() {
     method: 'get',
     route: '/teams/' + id
   })
-  return teams.data.reverse()
+  return teams?.data.reverse()
 }
 
-export async function createTeam(team: any) {
+export async function createTeam(team: ITeams) {
   return await APIService.request({
     method: "post",
     route: '/teams',
