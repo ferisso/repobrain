@@ -54,6 +54,10 @@ export default function Boards() {
         </span>
        <DropdownProjects />
       </div>
+      <button className="flex items-center justify-center gap-1 text-white bg-teal-500 py-2 px-4 rounded-md text-xs w-fit self-end mt-2">
+        <Plus size={18} />
+        Open issue
+      </button>
       <div className="mt-4 w-full h-full min-h-[400px] flex flex-col gap-3 border border-dashed text-center p-4 rounded-md">
         <div className="flex justify-between gap-[10px] p-[10px] text-zinc-900">
           <span className="board-col-title">To do</span>
