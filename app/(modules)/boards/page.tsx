@@ -73,8 +73,8 @@ export default function Boards() {
           {layout.map((l) => (
             <div className="flex flex-col justify-between bg-zinc-100 p-3 rounded-md text-left cursor-pointer" key={l.i}>
               <div className="flex flex-col">
-                <div className={`rounded-full text-[8px] mb-2 ${getLabelColor(l.label)} w-fit px-1 py-px text-white`}>{l.label}</div>
-                <span className="text-sm text-zinc-800">{l.title}</span>
+                <span className="text-sm text-zinc-800 mb-2">{l.title}</span>
+                <div className={`rounded-full text-[8px] ${getLabelColor(l.label)} w-fit px-1 py-px text-white`}>{l.label}</div>
               </div>
               
               <div className="flex justify-between">
