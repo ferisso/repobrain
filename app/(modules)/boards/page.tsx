@@ -83,7 +83,7 @@ export default function Boards() {
               
               <div className="flex justify-between">
                 <div className="px-1 py-px bg-teal-100 w-fit text-[10px] rounded-md text-teal-400 font-bold h-fit">
-                  {l.ticket}
+                  <a href="https://github.com/Raggiiz/movieters/issues/1" target="_blank">{l.ticket}</a>
                 </div>
                 <Image className="rounded-full w-5 h-5" src={data?.user?.image || ""} alt="Assignee image" width={20} height={20}/>
               </div>
