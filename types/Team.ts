@@ -2,6 +2,7 @@ import { IUsers } from "./User"
 
 export interface ITeams {
   id: string,
+  user_id: string,
   name: string,
   description?: string
   members?: ITeamMembers[]

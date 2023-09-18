@@ -9,6 +9,7 @@ import { deleteTeam } from "@/service/TeamService"
 import { toast } from "react-toastify"
 import AvatarList from "./AvatarList"
 import { useState } from "react"
+import { useSession } from "next-auth/react"
 
 interface TeamListCardProps {
   team: ITeams,
@@ -18,6 +19,7 @@ interface TeamListCardProps {
 
 export default function TeamListCard({ team, refreash, isLoading }: TeamListCardProps) {
   const [linkCopied, setLinkCopied] = useState(false)
+  const { data: userSession } = useSession()
   const deletingTeam = (id: string) => {
     deleteTeam(id)
       .then(res => {
@@ -41,6 +43,7 @@ export default function TeamListCard({ team, refreash, isLoading }: TeamListCard
     }, 3500)
   }
 
+
   return (
     <div
       className="w-full border rounded-md p-3 text-sm flex justify-between min-h-[64px] items-center"
@@ -56,49 +59,52 @@ export default function TeamListCard({ team, refreash, isLoading }: TeamListCard
         </div>
         <AvatarList users={team.members} />
       </div>
-      <DropdownMenu>
-        <DropdownMenuTrigger asChild>
-          <button
-            className="h-8 w-8 flex justify-center items-center border rounded-md hover:bg-zinc-50 outline-none"
-            aria-label="more information"
-            disabled={isLoading}
-          >
-            <MoreVertical size={18} />
-          </button>
-        </DropdownMenuTrigger>
-        <DropdownMenuContent className="w-28">
-          <div className="flex flex-col gap-1 text-xs">
-            <button className="w-full p-2 flex text-start gap-2 items-center hover:bg-zinc-50 rounded-md" onClick={() => copyLink(team.id)}>
-              {
-                linkCopied
-                  ? (
-                    <>
-                      <CheckCircle size={16} className="text-green-500" />
-                      Link Copied
-                    </>
-                  )
-                  : (
-                    <>
-                      <Copy size={16} />
-                      Copy invite
-                    </>
-                  )
-              }
-            </button>
-            <button className="w-full p-2 flex text-start gap-2 items-center hover:bg-zinc-50 rounded-md">
-              <Edit size={16} />
-              Edit
-            </button>
+      {userSession?.user.id === team.user_id && (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
             <button
-              className="w-full p-2 flex text-start gap-2 items-center hover:bg-red-50 rounded-md text-red-500"
-              onClick={() => deletingTeam(team.id)}
+              className="h-8 w-8 flex justify-center items-center border rounded-md hover:bg-zinc-50 outline-none"
+              aria-label="more information"
+              disabled={isLoading}
             >
-              <Trash size={16} />
-              Delete
+              <MoreVertical size={18} />
             </button>
-          </div>
-        </DropdownMenuContent>
-      </DropdownMenu>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent className="w-28">
+            <div className="flex flex-col gap-1 text-xs">
+              <button className="w-full p-2 flex text-start gap-2 items-center hover:bg-zinc-50 rounded-md" onClick={() => copyLink(team.id)}>
+                {
+                  linkCopied
+                    ? (
+                      <>
+                        <CheckCircle size={16} className="text-green-500" />
+                        Link Copied
+                      </>
+                    )
+                    : (
+                      <>
+                        <Copy size={16} />
+                        Copy invite
+                      </>
+                    )
+                }
+              </button>
+              <button className="w-full p-2 flex text-start gap-2 items-center hover:bg-zinc-50 rounded-md">
+                <Edit size={16} />
+                Edit
+              </button>
+              <button
+                className="w-full p-2 flex text-start gap-2 items-center hover:bg-red-50 rounded-md text-red-500"
+                onClick={() => deletingTeam(team.id)}
+              >
+                <Trash size={16} />
+                Delete
+              </button>
+            </div>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      )}
+
     </div>
   )
 }
