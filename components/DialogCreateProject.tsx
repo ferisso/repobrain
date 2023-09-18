@@ -16,6 +16,7 @@ interface DialogCreateProjectProps {
 
 export default function DialogCreateProject({ children, refreash }: DialogCreateProjectProps) {
   const [repos, setRepos] = useState<Array<any>>()
+  const [openDialog, setOpenDialog] = useState(false)
   const [selectedRepo, setSelectedRepo] = useState<any>()
   const [selectedTeam, setSelectedTeam] = useState<string>()
   const [buttonLoader, setButtonLoader] = useState<boolean>(false)
@@ -84,6 +85,7 @@ export default function DialogCreateProject({ children, refreash }: DialogCreate
     await createProject(newProject)
       .finally(() => {
         setButtonLoader(false)
+        setOpenDialog(false)
         refreash && refreash()
       })
   }
@@ -93,7 +95,7 @@ export default function DialogCreateProject({ children, refreash }: DialogCreate
   }, [])
 
   return (
-    <Dialog>
+    <Dialog open={openDialog} onOpenChange={(e: boolean) => setOpenDialog(e)}>
       <DialogTrigger asChild>
         {children}
       </DialogTrigger>
