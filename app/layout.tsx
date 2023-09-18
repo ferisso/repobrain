@@ -19,7 +19,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
-        <title>REPO Brain</title>
+        <title>Repobrain</title>
       </head>
       <body className={inter.className}>
         <Suspense fallback={<MainLoader />}>

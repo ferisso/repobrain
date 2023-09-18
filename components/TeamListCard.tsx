@@ -1,5 +1,5 @@
 import { ITeams } from "@/types/Team"
-import { Copy, Delete, Edit, Edit2, MoreVertical, Trash } from "react-feather"
+import { CheckCircle, Copy, Delete, Edit, Edit2, MoreVertical, Trash } from "react-feather"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,7 +7,8 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { deleteTeam } from "@/service/TeamService"
 import { toast } from "react-toastify"
-import { Skeleton } from "./ui/skeleton"
+import AvatarList from "./AvatarList"
+import { useState } from "react"
 
 interface TeamListCardProps {
   team: ITeams,
@@ -16,7 +17,7 @@ interface TeamListCardProps {
 }
 
 export default function TeamListCard({ team, refreash, isLoading }: TeamListCardProps) {
-
+  const [linkCopied, setLinkCopied] = useState(false)
   const deletingTeam = (id: string) => {
     deleteTeam(id)
       .then(res => {
@@ -31,35 +32,29 @@ export default function TeamListCard({ team, refreash, isLoading }: TeamListCard
       })
   }
 
+  const copyLink = (id: string) => {
+    const string = `${window.location.origin}/teams/${id}`
+    navigator.clipboard.writeText(string);
+    setLinkCopied(true)
+    setTimeout(() => {
+      setLinkCopied(false)
+    }, 3500)
+  }
+
   return (
     <div
       className="w-full border rounded-md p-3 text-sm flex justify-between min-h-[64px] items-center"
     >
-      <div className="flex flex-col gap-1">
-        {
-          isLoading ?
-            (
-              <div className="flex flex-col gap-1">
-                <Skeleton className="h-4 w-40" />
-                <Skeleton className="h-4 w-32" />
-              </div>
-            )
-            :
-            (
-              <div className="flex flex-col">
-                <p className="flex items-center gap-2">
-                  {team.name}
-                  <button className="text-zinc-400 hover:text-zinc-600">
-                    <Copy size={14} />
-                  </button>
-                </p>
-                <span className="text-zinc-400 text-xs">
-                  {team.description}
-                </span>
-              </div>
-
-            )
-        }
+      <div className="flex gap-4 items-center">
+        <div className="flex flex-col">
+          <p className="flex items-center gap-2">
+            {team.name}
+          </p>
+          <span className="text-zinc-400 text-xs">
+            {team.description}
+          </span>
+        </div>
+        <AvatarList users={team.members} />
       </div>
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
@@ -73,9 +68,22 @@ export default function TeamListCard({ team, refreash, isLoading }: TeamListCard
         </DropdownMenuTrigger>
         <DropdownMenuContent className="w-28">
           <div className="flex flex-col gap-1 text-xs">
-            <button className="w-full p-2 flex text-start gap-2 items-center hover:bg-zinc-50 rounded-md">
-              <Copy size={16} />
-              Copy invite
+            <button className="w-full p-2 flex text-start gap-2 items-center hover:bg-zinc-50 rounded-md" onClick={() => copyLink(team.id)}>
+              {
+                linkCopied
+                  ? (
+                    <>
+                      <CheckCircle size={16} className="text-green-500" />
+                      Link Copied
+                    </>
+                  )
+                  : (
+                    <>
+                      <Copy size={16} />
+                      Copy invite
+                    </>
+                  )
+              }
             </button>
             <button className="w-full p-2 flex text-start gap-2 items-center hover:bg-zinc-50 rounded-md">
               <Edit size={16} />

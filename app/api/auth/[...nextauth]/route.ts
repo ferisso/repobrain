@@ -58,9 +58,9 @@ const handler = NextAuth({
       }
       return token;
     },
-    async redirect({ url, baseUrl }) {
-      return `${baseUrl}/boards`
-    },
+    redirect: async ({ url }) => {
+      return url
+    }
   }
 });
 

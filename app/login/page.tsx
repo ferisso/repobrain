@@ -41,13 +41,24 @@ export default function Login() {
     });
 
     if (res?.error) {
-      toast.error("Usuário ou senha inválidos")
+      if (res.error !== "SessionRequired") {
+        toast.error("Usuário ou senha inválidos")
+      }
       setLoadingCredentials(false);
       setLoadingGithub(false);
     }
   }
 
   if (data) {
+    if (!!window.location.search) {
+      const urlPattern = /callbackUrl=([^&]+)/;
+      const match = window.location.search.match(urlPattern);
+      if (match) {
+        const decodedUrl = decodeURIComponent(match[1]);
+        router.push(decodedUrl)
+        return
+      }
+    }
     router.push('/boards')
   }
 
@@ -83,7 +94,7 @@ export default function Login() {
             type="submit"
           >
             {
-              loadingCredentials ? <SpinnerGap className="animate-spin" size={20} />  : "Entrar"
+              loadingCredentials ? <SpinnerGap className="animate-spin" size={20} /> : "Entrar"
             }
           </button>
         </form>
@@ -93,13 +104,13 @@ export default function Login() {
           disabled={loadingGithub || loadingCredentials}
           onClick={() => signin('github')}
         >
-          { 
-            loadingGithub 
-              ? <SpinnerGap size={20} className="animate-spin" /> 
+          {
+            loadingGithub
+              ? <SpinnerGap size={20} className="animate-spin" />
               : <>
-                  <GitHub size={20} />
-                  Entrar com o Github
-                </>
+                <GitHub size={20} />
+                Entrar com o Github
+              </>
           }
         </button>
       </div>

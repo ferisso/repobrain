@@ -60,11 +60,11 @@ export default function Boards() {
       </button>
       <div className="mt-4 w-full h-full min-h-[400px] flex flex-col gap-3 border border-dashed text-center p-4 rounded-md">
         <div className="flex justify-between gap-[10px] p-[10px] text-zinc-900">
+          <span className="board-col-title">Blocked</span>
           <span className="board-col-title">To do</span>
           <span className="board-col-title">In progress</span>
           <span className="board-col-title">Code review</span>
           <span className="board-col-title">Ready for tests</span>
-          <span className="board-col-title">Blocked</span>
           <span className="board-col-title">Done</span>
         </div>
         <ResponsiveGridLayout

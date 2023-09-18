@@ -16,14 +16,16 @@ interface DialogCreateTeamsProps {
 
 export default function DialogCreateTeams({ children, refreash }: DialogCreateTeamsProps) {
   const { register, handleSubmit, formState: { errors } } = useForm<ITeams>();
+  const [modal, setModal] = useState(false)
 
   const onSubmit: SubmitHandler<ITeams> = async (data) => {
     await createTeam(data)
     refreash && refreash()
+    setModal(false)
   }
 
   return (
-    <Dialog>
+    <Dialog open={modal} onOpenChange={(e) => setModal(e)}>
       <DialogTrigger asChild>
        {children}
       </DialogTrigger>
