@@ -77,9 +77,21 @@
   .board-col-title {
     @apply w-full text-left py-2 px-3 rounded-md bg-zinc-50 text-sm border-zinc-100 border text-zinc-500 font-light
   }
+
+  .input-themed {
+    @apply w-full border box-border px-4 py-2 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none
+  }
 }
 
 .react-grid-item.react-grid-placeholder {
   background-color: rgb(20 184 166) !important;
   border-radius: 6px;
+}
+
+.codex-editor--empty .ce-block:first-child .ce-paragraph[data-placeholder]:empty::before {
+  color: #9da4b1 !important;
+}
+
+.codex-editor__redactor {
+  padding-bottom: 4px !important;
 }

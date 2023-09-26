@@ -41,7 +41,7 @@ export default function DialogCreateTeams({ children, refreash }: DialogCreateTe
           <div className="flex flex-col w-full gap-1">
             <input
               placeholder="Name"
-              className="w-full border px-4 py-2 rounded-md outline-none focus:border-teal-500"
+              className="input-themed"
               {...register("name", { required: 'Please insert a name' })}
             />
             <span className="text-xs text-red-500 px-2">
@@ -50,7 +50,7 @@ export default function DialogCreateTeams({ children, refreash }: DialogCreateTe
           </div>
           <input
             placeholder="Description (optional)"
-            className="w-full border px-4 py-2 rounded-md outline-none focus:border-teal-500"
+            className="input-themed"
             {...register("description")}
           />
         </form>

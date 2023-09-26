@@ -34,7 +34,7 @@ export default function AvatarList({ users }: AvatarListProps) {
                         <AvatarImage src={members.user.image} />
                         <AvatarFallback>{members.user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
                       </Avatar>
-                      <div className="flex flex-col">
+                      <div className="flex flex-col items-start">
                         <p>
                         { members.user.name }
                         </p>

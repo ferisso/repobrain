@@ -22,7 +22,7 @@ const APIService = {
   getUserId: async function () {
     const userData = await getSession()
     if (!userData) { 
-      return null
+      return undefined
     }
     return userData.user.id
   },

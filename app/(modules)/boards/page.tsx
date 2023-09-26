@@ -10,25 +10,37 @@ import '/node_modules/react-grid-layout/css/styles.css'
 import '/node_modules/react-resizable/css/styles.css'
 import { useSession } from "next-auth/react"
 import Image from "next/image";
+import { useEffect, useState } from "react"
+import { useQuery } from "react-query"
+import { getBoards } from "@/service/BoardsService"
+import SheetCreateIssue from "@/components/SheetCreateIssue"
 
 export default function Boards() {
-
+  const [selectedProject, setSelectedProject] = useState<any>(null)
+  const { data: Boards, isLoading, refetch } = useQuery("boards", async () => {
+    selectedProject && await getBoards(selectedProject.id)
+  }, {
+    refetchOnMount: false
+  })
   const { data } = useSession()
 
   const ResponsiveGridLayout = WidthProvider(Responsive);
 
   const layout = [
-    { i: "a", x: 0, y: 0, w: 1, h: 1, title: 'Fix homepage title size', ticket: 99, label: 'bug'},
-    { i: "b", x: 1, y: 0, w: 1, h: 1, title: 'Implement modal to add company', ticket: 201, label: 'enhancement'},
-    { i: "c", x: 2, y: 0, w: 1, h: 1, title: 'Create component to general titles',ticket: 123, label: 'enhancement'},
-    { i: "d", x: 3, y: 0, w: 1, h: 1, title: 'Remove unused code from the repo', ticket: 432, label: 'help wanted'},
-    { i: "e", x: 4, y: 0, w: 1, h: 1, title: 'Implement modal to confirm delete', ticket: 87, label: 'bug'},
-    { i: "f", x: 5, y: 0, w: 1, h: 1, title: 'Fix homepage flicker layout', ticket: 870, label: 'bug'},
-    { i: "g", x: 1, y: 1, w: 1, h: 1, title: 'Fix slider in reports page', ticket: 870, label: 'bug'},
+    { i: "a", x: 0, y: 0, w: 1, h: 1, title: 'Fix homepage title size', ticket: 99, label: 'bug' },
+    { i: "b", x: 1, y: 0, w: 1, h: 1, title: 'Implement modal to add company', ticket: 201, label: 'enhancement' },
+    { i: "c", x: 2, y: 0, w: 1, h: 1, title: 'Create component to general titles', ticket: 123, label: 'enhancement' },
+    { i: "d", x: 3, y: 0, w: 1, h: 1, title: 'Remove unused code from the repo', ticket: 432, label: 'help wanted' },
+    { i: "e", x: 4, y: 0, w: 1, h: 1, title: 'Implement modal to confirm delete', ticket: 87, label: 'bug' },
+    { i: "f", x: 5, y: 0, w: 1, h: 1, title: 'Fix homepage flicker layout', ticket: 870, label: 'bug' },
+    { i: "g", x: 1, y: 1, w: 1, h: 1, title: 'Fix slider in reports page', ticket: 870, label: 'bug' },
   ];
 
+  useEffect(() => {
+    refetch()
+  }, [selectedProject, refetch])
+
   const getLabelColor = (label: string) => {
-    console.log(label)
     switch (label) {
       case 'documentation':
         return 'bg-[#0075ca]'
@@ -52,22 +64,26 @@ export default function Boards() {
             Select the project to see the board
           </p>
         </span>
-       <DropdownProjects />
+        <DropdownProjects selectedProject={setSelectedProject} />
       </div>
-      <button className="flex items-center justify-center gap-1 text-white bg-teal-500 py-2 px-4 rounded-md text-xs w-fit self-end mt-2">
-        <Plus size={18} />
-        Open issue
-      </button>
-      <div className="mt-4 w-full h-full min-h-[400px] flex flex-col gap-3 border border-dashed text-center p-4 rounded-md">
-        <div className="flex justify-between gap-[10px] p-[10px] text-zinc-900">
+      <div className="flex justify-end">
+        <SheetCreateIssue projectInfo={selectedProject}>
+          <button disabled={!selectedProject} className="flex items-center justify-center gap-1 text-white bg-teal-500 py-2 px-4 rounded-md text-xs w-fit self-end mt-2 hover:bg-teal-600 disabled:bg-zinc-300">
+            <Plus size={18} />
+            Open issue
+          </button>
+        </SheetCreateIssue>
+      </div>
+      <div className="mt-4 w-full h-full min-h-[400px] flex flex-col gap-3 border text-center p-4 rounded-md">
+        {/* <div className="flex justify-between gap-[10px] p-[10px] text-zinc-900">
           <span className="board-col-title">Blocked</span>
           <span className="board-col-title">To do</span>
           <span className="board-col-title">In progress</span>
           <span className="board-col-title">Code review</span>
           <span className="board-col-title">Ready for tests</span>
           <span className="board-col-title">Done</span>
-        </div>
-        <ResponsiveGridLayout
+        </div> */}
+        {/* <ResponsiveGridLayout
           className="w-full"
           layouts={{ lg: layout }}
           cols={{ lg: 6, md: 6, sm: 6, xs: 6, xxs: 6 }}
@@ -89,7 +105,7 @@ export default function Boards() {
               </div>
             </div>
           ))}
-        </ResponsiveGridLayout>
+        </ResponsiveGridLayout> */}
       </div>
     </>
   );

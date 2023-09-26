@@ -17,6 +17,7 @@ interface DialogCreateProjectProps {
 export default function DialogCreateProject({ children, refreash }: DialogCreateProjectProps) {
   const [repos, setRepos] = useState<Array<any>>()
   const [openDialog, setOpenDialog] = useState(false)
+  const [hasGithub, setHasGithub] = useState(true)
   const [selectedRepo, setSelectedRepo] = useState<any>()
   const [selectedTeam, setSelectedTeam] = useState<string>()
   const [buttonLoader, setButtonLoader] = useState<boolean>(false)
@@ -29,6 +30,10 @@ export default function DialogCreateProject({ children, refreash }: DialogCreate
 
   const getRepos = async () => {
     const accessToken = session.data?.user.access_token
+    if (!accessToken) {
+      setHasGithub(false)
+      return
+    }
     const response = await fetch("https://api.github.com/user/repos", {
       headers: {
         Authorization: `Bearer ${accessToken}`,
@@ -109,7 +114,7 @@ export default function DialogCreateProject({ children, refreash }: DialogCreate
 
         <form className="flex flex-col gap-2" onSubmit={submitForm}>
           <p className="text-xs text-zinc-500 ml-2">Github repository</p>
-          <Select onValueChange={(e) => setSelectedRepo(e)}>
+          <Select onValueChange={(e) => setSelectedRepo(e)} disabled={!hasGithub}>
             <SelectTrigger className="w-full">
               <SelectValue placeholder="Select a repository" />
             </SelectTrigger>
@@ -121,6 +126,7 @@ export default function DialogCreateProject({ children, refreash }: DialogCreate
           </Select>
           <span className="text-xs text-red-500 ml-2 -mt-1">
             {!!errorMsgs.repos && errorMsgs.repos}
+            { !hasGithub && 'Login with github to show your projects' }
           </span>
           <p className="text-xs text-zinc-500 ml-2">Team</p>
           <Select onValueChange={(e) => setSelectedTeam(e)}>

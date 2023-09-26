@@ -3,7 +3,7 @@ import APIService from "./APIService";
 import { toast } from "react-toastify";
 
 
-export async function getProjects(): Promise<IProjects> {
+export async function getUsersProjects(): Promise<IProjects> {
   const id = await APIService.getUserId()
   const projects = await APIService.request({
     method: 'get',
