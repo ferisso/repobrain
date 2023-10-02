@@ -9,15 +9,18 @@ import { useEffect } from "react";
 interface TeamMemberSelectProps {
   teamId: string,
   placeholder: string
+  selectedMember: (memberId: string) => void
 }
 
-export default function TeamMemberSelect({ teamId, placeholder }: TeamMemberSelectProps) {
+export default function TeamMemberSelect({ teamId, placeholder, selectedMember }: TeamMemberSelectProps) {
   const { data: teamMembers } = useQuery<ITeamMembers[]>('teamMembersSelect', async () => {
     return await getTeamMember(teamId)
+  }, {
+    refetchOnWindowFocus: false
   })
 
   return (
-    <Select onValueChange={() => { }}>
+    <Select onValueChange={selectedMember}>
       <SelectTrigger>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>

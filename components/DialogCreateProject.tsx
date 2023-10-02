@@ -50,6 +50,8 @@ export default function DialogCreateProject({ children, refreash }: DialogCreate
 
   const { data: teams, isLoading } = useQuery<ITeams[]>('teams', async () => {
     return await getTeams()
+  }, {
+    refetchOnWindowFocus: false
   })
 
   const submitForm = async (e: FormEvent) => {

@@ -2,15 +2,16 @@
 
 export interface IBoards {
     id?: string;
-    title: string;
-    description: string | null;
-    reporter: string;
-    assignee: string;
-    status: string;
-    points: number | null;
-    issue: number | null;
-    label: string | null;
+    title?: string;
+    description?: string;
+    reporter?: string;
+    assignee?: string;
+    status?: number;
+    points?: number;
+    issue?: number;
+    label?: string;
     project_id?: string;
+    onBoardStatus?: number;
     createdAt?: Date;
     updatedAt?: Date;
 }

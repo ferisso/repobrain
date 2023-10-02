@@ -11,6 +11,8 @@ import { useQuery } from "react-query"
 export default function Projects() {
   const { data: projects, isLoading, refetch } = useQuery<IProjects[]>('projects', async () => {
     return await getUsersProjects()
+  }, {
+    refetchOnWindowFocus: false
   })
   return (
     <>

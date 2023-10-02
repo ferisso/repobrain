@@ -15,6 +15,9 @@ export default function DropdownProjects(props: DropdownProjectsProps) {
 
   const { data: projects, isLoading, refetch } = useQuery<IProjects[]>('dropdownProjects', async () => {
     return await getUsersProjects()
+  }, {
+    refetchInterval: 20000,
+    refetchOnWindowFocus: false
   })
 
   const selectProject = (projectId: string) => {

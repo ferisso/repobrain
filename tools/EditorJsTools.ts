@@ -12,9 +12,6 @@ const EDITOR_TOOLS = {
   header: {
     class: Header,
     inlineToolbar: true,
-    config: {
-      placeholder: "Enter a header",
-    },
   },
   checklist: Checklist,
   table: Table,
