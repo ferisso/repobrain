@@ -18,7 +18,7 @@ export default function Header() {
   ])
 
   return (
-    <header className="h-14 w-full border-b bg-whiteborder-zinc-200 sticky top-0 z-50">
+    <header className="h-14 w-full border-b bg-white sticky top-0 z-50">
       <div className="flex justify-between items-center px-14 h-full container mx-auto">
         <div className="flex gap-10 items-center text-zinc-800/70 text-xs font-light">
           <button aria-label="go to home">
