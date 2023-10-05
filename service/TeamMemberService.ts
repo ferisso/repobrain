@@ -3,7 +3,7 @@ import APIService from "./APIService";
 
 
 const TeamMemberService = {
-  async getTeamMember(teamId: string) {
+  async getTeamMember(teamId: string): Promise<ITeamMembers[]> {
     const members = await APIService.request({
       method: "get",
       route: '/members/' + teamId,
