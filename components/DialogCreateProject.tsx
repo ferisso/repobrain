@@ -5,8 +5,8 @@ import { useSession } from "next-auth/react"
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select"
 import { ITeams } from "@/types/Team"
 import { useQuery } from "react-query"
-import { getTeams } from "@/service/TeamService"
-import { createProject } from "@/service/ProjectService"
+import TeamService from "@/service/TeamService"
+import ProjectService from "@/service/ProjectService"
 import { Spinner } from "@phosphor-icons/react"
 
 interface DialogCreateProjectProps {
@@ -49,7 +49,7 @@ export default function DialogCreateProject({ children, refreash }: DialogCreate
   }
 
   const { data: teams, isLoading } = useQuery<ITeams[]>('teams', async () => {
-    return await getTeams()
+    return await TeamService.getTeams()
   }, {
     refetchOnWindowFocus: false
   })
@@ -89,7 +89,7 @@ export default function DialogCreateProject({ children, refreash }: DialogCreate
       url: selectedRepoData.url,
       team_id: selectedTeam
     }
-    await createProject(newProject)
+    await ProjectService.createProject(newProject)
       .finally(() => {
         setButtonLoader(false)
         setOpenDialog(false)

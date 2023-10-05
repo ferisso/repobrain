@@ -2,7 +2,7 @@
 'use client'
 import DialogCreateProject from "@/components/DialogCreateProject"
 import ProjectListCard from "@/components/ProjectListCard"
-import { getUsersProjects } from "@/service/ProjectService"
+import ProjectService from "@/service/ProjectService"
 import { IProjects } from "@/types/Projects"
 import { FolderDashed } from "@phosphor-icons/react"
 import { Plus } from "react-feather"
@@ -10,7 +10,7 @@ import { useQuery } from "react-query"
 
 export default function Projects() {
   const { data: projects, isLoading, refetch } = useQuery<IProjects[]>('projects', async () => {
-    return await getUsersProjects()
+    return await ProjectService.getUsersProjects()
   }, {
     refetchOnWindowFocus: false
   })

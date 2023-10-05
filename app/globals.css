@@ -75,7 +75,7 @@
   }
 
   .board-col-title {
-    @apply w-full text-left py-2 px-3 rounded-md bg-zinc-50 text-sm border-zinc-100 border text-zinc-500 font-light
+    @apply w-full text-left py-2 px-3 rounded-md bg-zinc-50 text-sm border-zinc-100 border text-zinc-500 font-light min-w-[150px]
   }
 
   .input-themed {

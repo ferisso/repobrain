@@ -11,16 +11,17 @@ import EDITOR_TOOLS from "@/tools/EditorJsTools";
 import EditorJS from '@editorjs/editorjs';
 import { FormEvent, useEffect, useState } from "react";
 import TeamMemberSelect from "./TeamMemberSelect";
-import { createBoard } from "@/service/BoardsService";
+import BoardService from "@/service/BoardsService";
 
 
 interface SheetCreateIssueProps {
-  projectInfo: any
+  projectInfo: any,
+  refetch?: () => void
   children: React.ReactNode
 }
 
-export default function SheetCreateIssue({ projectInfo, children }: SheetCreateIssueProps) {
-  const [initialize, setInitialize] = useState(false)
+export default function SheetCreateIssue({ projectInfo, refetch, children }: SheetCreateIssueProps) {
+  const [isOpen, setIsOpen] = useState(false)
   const [reporterId, setReporterId] = useState<string>()
   const [assigneeId, setAssigneeId] = useState<string>()
   const [title, setTitle] = useState<string>()
@@ -28,14 +29,17 @@ export default function SheetCreateIssue({ projectInfo, children }: SheetCreateI
 
   const openEvent = (event: boolean) => {
     if (event) {
-      new EditorJS({
-        holder: "editorjs",
-        tools: EDITOR_TOOLS,
-        placeholder: "Description",
-        inlineToolbar: true,
-        hideToolbar: false,
-      })
+      setTimeout(() => {
+        new EditorJS({
+          holder: "editorjs",
+          tools: EDITOR_TOOLS,
+          placeholder: "Description",
+          inlineToolbar: true,
+          hideToolbar: false,
+        })
+      }, 500)
     }
+    setIsOpen(event)
   }
 
   const submitForm = async (event: FormEvent) => {
@@ -48,15 +52,16 @@ export default function SheetCreateIssue({ projectInfo, children }: SheetCreateI
       points: !!points ? Number(points) : 0,
       project_id: projectInfo.id
     }
-
-    await createBoard(newIssue)
-    .then(res => {
-      console.log(res)
-    }) 
+  
+    await BoardService.createBoard(newIssue)
+    .then(() => {
+      refetch && refetch()
+      setIsOpen(false)
+    })
   }
 
   return (
-    <Sheet onOpenChange={openEvent}>
+    <Sheet open={isOpen} onOpenChange={openEvent}>
       <SheetTrigger>
         {children}
       </SheetTrigger>

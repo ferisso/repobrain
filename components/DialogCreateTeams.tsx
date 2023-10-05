@@ -5,7 +5,7 @@ import { Plus } from "@phosphor-icons/react"
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useSession } from "next-auth/react";
 import APIService from "@/service/APIService";
-import { createTeam } from "@/service/TeamService";
+import TeamService from "@/service/TeamService";
 import { ITeams } from "@/types/Team";
 
 
@@ -19,7 +19,7 @@ export default function DialogCreateTeams({ children, refreash }: DialogCreateTe
   const [modal, setModal] = useState(false)
 
   const onSubmit: SubmitHandler<ITeams> = async (data) => {
-    await createTeam(data)
+    await TeamService.createTeam(data)
     refreash && refreash()
     setModal(false)
   }

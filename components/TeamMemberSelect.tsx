@@ -1,7 +1,7 @@
 
 import { useQuery } from "react-query";
 import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from "./ui/select";
-import { getTeamMember } from "@/service/TeamMemberService";
+import TeamMemberService from "@/service/TeamMemberService";
 import { ITeamMembers } from "@/types/Team";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useEffect } from "react";
@@ -14,7 +14,7 @@ interface TeamMemberSelectProps {
 
 export default function TeamMemberSelect({ teamId, placeholder, selectedMember }: TeamMemberSelectProps) {
   const { data: teamMembers } = useQuery<ITeamMembers[]>('teamMembersSelect', async () => {
-    return await getTeamMember(teamId)
+    return await TeamMemberService.getTeamMember(teamId)
   }, {
     refetchOnWindowFocus: false
   })

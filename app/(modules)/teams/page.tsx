@@ -5,12 +5,12 @@ import DialogCreateTeams from "@/components/DialogCreateTeams"
 import { useQuery } from "react-query"
 import TeamListCard from "@/components/TeamListCard"
 import { ITeams } from "@/types/Team"
-import { getTeams } from "@/service/TeamService"
+import TeamService from "@/service/TeamService"
 import { Plus } from "@phosphor-icons/react"
 
 export default function Teams() {
   const { data: teams, refetch, isLoading } = useQuery<ITeams[]>('teams', async () => {
-    return await getTeams()
+    return await TeamService.getTeams()
   })
 
   return (

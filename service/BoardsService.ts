@@ -1,19 +1,30 @@
 import { IBoards } from "@/types/Boards";
 import APIService from "./APIService";
 
-export async function getBoards(boardId: string) {
-  const boards = await APIService.request({
-    method: 'get',
-    route: '/boards/' + boardId,
-  })
-  return boards.data
+const BoardService = {
+  async getBoards(boardId: string): Promise<IBoards[]> {
+    const boards = await APIService.request({
+      method: 'get',
+      route: '/boards/' + boardId,
+    })
+    return boards.data
+  },
+
+  async createBoard(board: IBoards) {
+    return await APIService.request({
+      method: 'post',
+      route: '/boards',
+      body: board
+    })
+  },
+
+  async updateBoard(board: IBoards) {
+    return await APIService.request({
+      method: 'put',
+      route: '/boards',
+      body: board
+    })
+  }
 }
 
-export async function createBoard(board: IBoards) {
-  return await APIService.request({
-    method: 'post',
-    route: '/boards',
-    body: board
-  })
-}
-
+export default BoardService

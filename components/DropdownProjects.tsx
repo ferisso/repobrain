@@ -2,7 +2,7 @@
 import { useQuery } from "react-query";
 import DialogCreateProject from "./DialogCreateProject";
 import { Select, SelectContent, SelectItem, SelectSeparator, SelectTrigger, SelectValue } from "./ui/select";
-import { getUsersProjects } from "@/service/ProjectService";
+import ProjectService from "@/service/ProjectService";
 import { IProjects } from "@/types/Projects";
 import { Skeleton } from "./ui/skeleton";
 import { SpinnerGap } from "@phosphor-icons/react";
@@ -14,7 +14,7 @@ interface DropdownProjectsProps {
 export default function DropdownProjects(props: DropdownProjectsProps) {
 
   const { data: projects, isLoading, refetch } = useQuery<IProjects[]>('dropdownProjects', async () => {
-    return await getUsersProjects()
+    return await ProjectService.getUsersProjects()
   }, {
     refetchInterval: 20000,
     refetchOnWindowFocus: false

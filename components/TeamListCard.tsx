@@ -5,7 +5,7 @@ import {
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { deleteTeam } from "@/service/TeamService"
+import TeamService from "@/service/TeamService"
 import { toast } from "react-toastify"
 import AvatarList from "./AvatarList"
 import { useState } from "react"
@@ -21,7 +21,7 @@ export default function TeamListCard({ team, refreash, isLoading }: TeamListCard
   const [linkCopied, setLinkCopied] = useState(false)
   const { data: userSession } = useSession()
   const deletingTeam = (id: string) => {
-    deleteTeam(id)
+    TeamService.deleteTeam(id)
       .then(res => {
         if (res?.data) {
           toast.success('Team deleted')

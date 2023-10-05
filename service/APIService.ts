@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 
 const apiUrl = "http://localhost:3001"
 const APIService = {
-  request: async function({ method, route, body }: IRequestApiService) {
+  async request({ method, route, body }: IRequestApiService) {
     if (method === 'get') {
       return axios[method](`${apiUrl}${route}`)
       .then((res) => res)
@@ -19,7 +19,7 @@ const APIService = {
     .then((res) => res)
     .catch((err) => this.handleError(err))
   },
-  getUserId: async function () {
+  async getUserId () {
     const userData = await getSession()
     if (!userData) { 
       return undefined

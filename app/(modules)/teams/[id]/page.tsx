@@ -1,7 +1,7 @@
 'use client'
 import { useRouter } from "next/navigation"
 import { Dialog, DialogContent, DialogDescription, DialogTitle, DialogHeader } from "../../../../components/ui/dialog"
-import { addTeamMember } from "@/service/TeamMemberService"
+import TeamMemberService from "@/service/TeamMemberService"
 
 export default function Team({ params }: { params: { id: string } }) {
   const route = useRouter() 
@@ -11,7 +11,7 @@ export default function Team({ params }: { params: { id: string } }) {
   }
 
   const joinTeam = async () => {
-    await addTeamMember(params.id)
+    await TeamMemberService.addTeamMember(params.id)
     .then(res => {
       res && route.push('/teams')
     })

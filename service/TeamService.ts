@@ -1,27 +1,28 @@
 import { ITeams } from "@/types/Team"
 import APIService from "./APIService"
 
-
-export async function getTeams() {
-  const id = await APIService.getUserId()
-  const teams = await APIService.request({
-    method: 'get',
-    route: '/teams/' + id
-  })
-  return teams?.data.reverse()
+const TeamService = {
+  async getTeams() {
+    const id = await APIService.getUserId()
+    const teams = await APIService.request({
+      method: 'get',
+      route: '/teams/' + id
+    })
+    return teams?.data.reverse()
+  },
+  async createTeam(team: ITeams) {
+    return await APIService.request({
+      method: "post",
+      route: '/teams',
+      body: team  
+    })
+  },
+  async deleteTeam(id: string) {
+    return await APIService.request({
+      method: "delete",
+      route: '/teams/' + id,
+    })
+  }
 }
 
-export async function createTeam(team: ITeams) {
-  return await APIService.request({
-    method: "post",
-    route: '/teams',
-    body: team  
-  })
-}
-
-export async function deleteTeam(id: string) {
-  return await APIService.request({
-    method: "delete",
-    route: '/teams/' + id,
-  })
-}
+export default TeamService

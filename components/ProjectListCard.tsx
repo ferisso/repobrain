@@ -1,7 +1,7 @@
 import { IProjects } from "@/types/Projects"
 import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from "./ui/dropdown-menu"
 import { Copy, Edit, MoreVertical, Trash } from "react-feather"
-import { deleteProject } from "@/service/ProjectService"
+import ProjectService from "@/service/ProjectService"
 import {
   HoverCard,
   HoverCardContent,
@@ -20,7 +20,7 @@ export default function ProjectListCard({ project, refreash }: ProjectListCardPr
   const { data: userSession } = useSession()
 
   const deleteSelectedProject = async (id: string) => {
-    deleteProject(id)
+    ProjectService.deleteProject(id)
     refreash && refreash()
   }
 
