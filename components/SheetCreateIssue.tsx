@@ -78,8 +78,8 @@ export default function SheetCreateIssue({ projectInfo, refetch, children }: She
           {
             projectInfo?.team_id && (
               <div className="flex gap-4">
-                <TeamMemberSelect placeholder="Reporter" teamId={projectInfo.team_id} selectedMember={setReporterId} />
-                <TeamMemberSelect placeholder="Assignee" teamId={projectInfo.team_id} selectedMember={setAssigneeId} />
+                <TeamMemberSelect placeholder="Reporter" teamId={projectInfo.team_id} selectMember={setReporterId}  required />
+                <TeamMemberSelect placeholder="Assignee" teamId={projectInfo.team_id} selectMember={setAssigneeId} required />
               </div>
             )}
           <div className="flex gap-4">

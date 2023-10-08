@@ -1,15 +1,17 @@
-
+'use client'
 import { IBoards } from "@/types/Boards";
 import { useEffect, useState } from "react";
 import GridLayout, { Responsive, WidthProvider } from "react-grid-layout";
 import AvatarCard from "./AvatarCard";
 import BoardService from "@/service/BoardsService";
+import { useRouter } from "next/navigation";
 
 interface DevTrackProps {
-  boards?: IBoards[]
+  boards?: IBoards[],
 }
 
 export default function DevTrack({ boards }: DevTrackProps) {
+  const router = useRouter()
   const ResponsiveGridLayout = WidthProvider(Responsive);
   const [layout, setLayout] = useState<any>()
 
@@ -21,6 +23,10 @@ export default function DevTrack({ boards }: DevTrackProps) {
       bug: 'bg-[#d73a4a]'
     }
     return labelColor[label]
+  }
+
+  const openCard = (issueId: string) => {
+    router.push('/boards/' + issueId)
   }
 
   useEffect(() => {
@@ -45,10 +51,6 @@ export default function DevTrack({ boards }: DevTrackProps) {
       return;
     }
 
-    if (realItem.x  === oldStatus) {
-      return
-    }
-
     const board = {
       id: realItem.i,
       status: realItem.x
@@ -68,35 +70,38 @@ export default function DevTrack({ boards }: DevTrackProps) {
       </div>
       {
         layout && (
-          <ResponsiveGridLayout
-            layouts={{ lg: layout }}
-            cols={{ lg: 6, md: 6, sm: 6, xs: 6, xxs: 6 }}
-            rowHeight={140}
-            isResizable={false}
-            onDragStop={changeBoardStatus}
-            useCSSTransforms={false}
-          >
-            {layout?.map((l: any, index: number) => (
-              <div className="z-0 flex flex-col justify-between backdrop-blur-sm p-3 rounded-md text-left cursor-move border shadow-md min-w-[150px]" key={l.id}>
-                <div className="flex flex-col">
-                <span className="text-xs text-zinc-500"># {index + 1}</span>
-                  <span className="text-sm mb-2">
-                    {
-                      l.title.length > 40 ? `${l.title.substring(0, 40)}...` : l.title
-                    }
-                  </span>
-                  <div className={`rounded-full text-[8px] ${getLabelColor(l.label)} w-fit px-1 py-px text-white`}>{l.label}</div>
-                </div>
-
-                <div className="flex justify-between">
-                  <div className="px-3 py-1 rounded-2xl bg-zinc-200 w-fit text-[10px] text-zinc-600 font-bold h-fit">
-                    <a>{l.points}</a>
+          <div className="max-h-[560px] overflow-y-auto">
+            <ResponsiveGridLayout
+              layouts={{ lg: layout }}
+              cols={{ lg: 6, md: 6, sm: 6, xs: 6, xxs: 6 }}
+              isResizable={false}
+              onDragStop={changeBoardStatus}
+              useCSSTransforms={false}
+              autoSize={false}
+              className="h-[560px]"
+            >
+              {layout?.map((l: any, index: number) => (
+                <div className="z-0 flex flex-col justify-between backdrop-blur-sm p-3 rounded-md text-left cursor-move border shadow-md min-w-[150px]" key={l.id} onDoubleClick={() => openCard(l.id)}>
+                  <div className="flex flex-col">
+                    <span className="text-xs text-zinc-500"># {index + 1}</span>
+                    <span className="text-sm mb-2">
+                      {
+                        l.title.length > 40 ? `${l.title.substring(0, 40)}...` : l.title
+                      }
+                    </span>
+                    <div className={`rounded-full text-[8px] ${getLabelColor(l.label)} w-fit px-1 py-px text-white`}>{l.label}</div>
                   </div>
-                  <AvatarCard user={l.assignee_info} />
+
+                  <div className="flex justify-between items-center">
+                    <div className="px-3 py-1 rounded-2xl bg-zinc-200 w-fit text-[10px] text-zinc-600 font-bold h-fit">
+                      <a>{l.points}</a>
+                    </div>
+                    <AvatarCard user={l.assignee_info} hoverable={false} />
+                  </div>
                 </div>
-              </div>
-            ))}
-          </ResponsiveGridLayout>
+              ))}
+            </ResponsiveGridLayout>
+          </div>
         )
       }
     </>

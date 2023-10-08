@@ -39,10 +39,10 @@ export default function Boards() {
       </div>
       <div className="flex justify-end">
         <SheetCreateIssue projectInfo={selectedProject} refetch={refetch}>
-          <button disabled={!selectedProject} className="flex items-center justify-center gap-1 text-white bg-teal-500 py-2 px-4 rounded-md text-xs w-fit self-end mt-2 hover:bg-teal-600 disabled:bg-zinc-300">
+          <div className="flex items-center justify-center gap-1 text-white bg-teal-500 py-2 px-4 rounded-md text-xs w-fit self-end mt-2 hover:bg-teal-600 disabled:bg-zinc-300">
             <Plus size={18} />
             Open issue
-          </button>
+          </div>
         </SheetCreateIssue>
       </div>
       <div className="mt-4 w-full h-full min-h-[400px] flex flex-col gap-3 border text-center p-4 rounded-md overflow-x-auto mb-8">

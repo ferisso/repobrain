@@ -9,10 +9,12 @@ import { useEffect } from "react";
 interface TeamMemberSelectProps {
   teamId: string,
   placeholder: string
-  selectedMember: (memberId: string) => void
+  selectedMember?: string,
+  required?: boolean
+  selectMember: (memberId: string) => void
 }
 
-export default function TeamMemberSelect({ teamId, placeholder, selectedMember }: TeamMemberSelectProps) {
+export default function TeamMemberSelect({ teamId, placeholder, selectMember, selectedMember, required }: TeamMemberSelectProps) {
   const { data: teamMembers } = useQuery<ITeamMembers[]>('teamMembersSelect', async () => {
     return await TeamMemberService.getTeamMember(teamId)
   }, {
@@ -20,7 +22,7 @@ export default function TeamMemberSelect({ teamId, placeholder, selectedMember }
   })
 
   return (
-    <Select onValueChange={selectedMember}>
+    <Select onValueChange={selectMember} defaultValue={selectedMember} required={required}>
       <SelectTrigger>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>

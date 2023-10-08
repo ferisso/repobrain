@@ -24,6 +24,13 @@ const BoardService = {
       route: '/boards',
       body: board
     })
+  },
+
+  async deleteBoard(boardId: string) {
+    return await APIService.request({
+      method: 'delete',
+      route: '/boards/' + boardId
+    })
   }
 }
 

@@ -7,11 +7,11 @@ import {
 } from "@/components/ui/hover-card"
 
 
-export default function AvatarCard({ user }: { user: IUsers }) {
+export default function AvatarCard({ user, hoverable = true }: { user: IUsers, hoverable?: boolean }) {
   return (
     <HoverCard>
     <HoverCardTrigger>
-      <Avatar className="h-7 w-7 hover:h-8 hover:w-8 transition-all cursor-pointer border">
+      <Avatar className={`h-7 w-7 transition-all cursor-pointer border ${hoverable && 'hover:h-8 hover:w-8'}`}>
         <AvatarImage src={user.image} />
         <AvatarFallback className="text-sm">{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
       </Avatar>
