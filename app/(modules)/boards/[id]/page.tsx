@@ -62,7 +62,7 @@ export default async function Board({ params }: { params: { id: string } }) {
             }
           </div>
           <div className="flex gap-2 items-center">
-            <TeamMemberSelect placeholder="Reporter" teamId={board?.project?.team_id} selectMember={() => { }} selectedMember={board?.reporter}></TeamMemberSelect>
+            <TeamMemberSelect placeholder="Reporter" teamId={board?.project?.team_id} selectMember={() => { }} selectedMember={board?.reporter} disabled></TeamMemberSelect>
             <div className="flex justify-center items-center w-10 text-zinc-600">
               <ArrowRight size={24} />
             </div>
