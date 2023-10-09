@@ -26,6 +26,7 @@ export default function SheetCreateIssue({ projectInfo, refetch, children }: She
   const [assigneeId, setAssigneeId] = useState<string>()
   const [title, setTitle] = useState<string>()
   const [points, setPoints] = useState<string>()
+  const [label, setLabel] = useState<string>()
 
   const openEvent = (event: boolean) => {
     if (event) {
@@ -46,11 +47,12 @@ export default function SheetCreateIssue({ projectInfo, refetch, children }: She
     event.preventDefault()
 
     const newIssue = {
+      project_id: projectInfo.id,
       title,
       reporter: reporterId,
       assignee: assigneeId,
       points: !!points ? Number(points) : 0,
-      project_id: projectInfo.id
+      label
     }
   
     await BoardService.createBoard(newIssue)
@@ -84,7 +86,7 @@ export default function SheetCreateIssue({ projectInfo, refetch, children }: She
             )}
           <div className="flex gap-4">
             <input type="number" className="input-themed" placeholder="Points" onChange={($event) => setPoints($event.target.value)} />
-            <input type="number" className="input-themed" placeholder="Label" />
+            <input type="text" className="input-themed" placeholder="Label"  onChange={($event) => setLabel($event.target.value)} />
           </div>
           <button className="flex w-full py-3 justify-center items-center bg-teal-500 hover:bg-teal-600 transition-colors text-white rounded-md text-sm" type="submit">
             Create issue

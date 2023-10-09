@@ -11,10 +11,11 @@ interface TeamMemberSelectProps {
   placeholder: string
   selectedMember?: string,
   required?: boolean
+  disabled?: boolean
   selectMember: (memberId: string) => void
 }
 
-export default function TeamMemberSelect({ teamId, placeholder, selectMember, selectedMember, required }: TeamMemberSelectProps) {
+export default function TeamMemberSelect({ teamId, placeholder, selectMember, selectedMember, required, disabled }: TeamMemberSelectProps) {
   const { data: teamMembers } = useQuery<ITeamMembers[]>('teamMembersSelect', async () => {
     return await TeamMemberService.getTeamMember(teamId)
   }, {
@@ -22,8 +23,8 @@ export default function TeamMemberSelect({ teamId, placeholder, selectMember, se
   })
 
   return (
-    <Select onValueChange={selectMember} defaultValue={selectedMember} required={required}>
-      <SelectTrigger>
+    <Select onValueChange={selectMember} defaultValue={selectedMember} required={required} disabled={disabled}>
+      <SelectTrigger className="max-w-[260px]">
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>

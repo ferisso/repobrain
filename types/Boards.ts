@@ -1,3 +1,4 @@
+import { IProjects } from "./Projects";
 import { IUsers } from "./User";
 
 export interface IBoards {
@@ -11,7 +12,8 @@ export interface IBoards {
     issue?: number;
     label?: string;
     project_id?: string;
-    onBoardStatus?: number;
+    project?: IProjects
+    onBoardStatus?: 0 | 1 | 2| 3 | 4 | 5;
     reporter_info?: IUsers,
     assignee_info?: IUsers,
     createdAt?: Date;
