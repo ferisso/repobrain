@@ -5,6 +5,7 @@ import GridLayout, { Responsive, WidthProvider } from "react-grid-layout";
 import AvatarCard from "./AvatarCard";
 import BoardService from "@/service/BoardsService";
 import { useRouter } from "next/navigation";
+import ChipIssueLabels from '@/components/ChipIssueLabels'
 
 interface DevTrackProps {
   boards?: IBoards[],
@@ -14,16 +15,6 @@ export default function DevTrack({ boards }: DevTrackProps) {
   const router = useRouter()
   const ResponsiveGridLayout = WidthProvider(Responsive);
   const [layout, setLayout] = useState<any>()
-
-  const getLabelColor = (label: keyof typeof labelColor) => {
-    const labelColor = {
-      documentation: 'bg-[#0075ca]',
-      enhancement: 'bg-[#7057ff]',
-      'help wanted': 'bg-[#008672]',
-      bug: 'bg-[#d73a4a]'
-    }
-    return labelColor[label]
-  }
 
   const openCard = (issueId: string) => {
     router.push('/boards/' + issueId)
@@ -51,6 +42,8 @@ export default function DevTrack({ boards }: DevTrackProps) {
       return;
     }
 
+    if (realItem.x == oldStatus) return;
+
     const board = {
       id: realItem.i,
       status: realItem.x
@@ -70,18 +63,16 @@ export default function DevTrack({ boards }: DevTrackProps) {
       </div>
       {
         layout && (
-          <div className="max-h-[560px] overflow-y-auto">
             <ResponsiveGridLayout
               layouts={{ lg: layout }}
               cols={{ lg: 6, md: 6, sm: 6, xs: 6, xxs: 6 }}
               isResizable={false}
               onDragStop={changeBoardStatus}
               useCSSTransforms={false}
-              autoSize={false}
-              className="h-[560px]"
+              autoSize={true}
             >
               {layout?.map((l: any, index: number) => (
-                <div className="z-0 flex flex-col justify-between backdrop-blur-sm p-3 rounded-md text-left cursor-move border shadow-md min-w-[150px]" key={l.id} onDoubleClick={() => openCard(l.id)}>
+                <div className="z-0 flex flex-col justify-between p-3 rounded-md text-left cursor-move border shadow-sm min-w-[150px] hover:backdrop-blur-sm" key={l.id} onDoubleClick={() => openCard(l.id)}>
                   <div className="flex flex-col">
                     <span className="text-xs text-zinc-500"># {index + 1}</span>
                     <span className="text-sm mb-2">
@@ -89,7 +80,9 @@ export default function DevTrack({ boards }: DevTrackProps) {
                         l.title.length > 40 ? `${l.title.substring(0, 40)}...` : l.title
                       }
                     </span>
-                    <div className={`rounded-full text-[8px] ${getLabelColor(l.label)} w-fit px-1 py-px text-white`}>{l.label}</div>
+                    {
+                      !!l.label && <ChipIssueLabels label={l.label} className="py-0.5 px-2" />
+                    }
                   </div>
 
                   <div className="flex justify-between items-center">
@@ -101,7 +94,6 @@ export default function DevTrack({ boards }: DevTrackProps) {
                 </div>
               ))}
             </ResponsiveGridLayout>
-          </div>
         )
       }
     </>

@@ -14,7 +14,7 @@ interface DropdownProjectsProps {
 export default function DropdownProjects(props: DropdownProjectsProps) {
   const searchParams = useSearchParams();
   const router = useRouter()
-  const urlProject = searchParams.get('project')
+  const urlProject = searchParams.get('project_id')
 
   const { data: projects, isLoading } = useQuery<IProjects[]>('dropdownProjects', async () => {
     return await ProjectService.getUsersProjects();
@@ -30,7 +30,7 @@ export default function DropdownProjects(props: DropdownProjectsProps) {
 
   const setRouteId = (projectId: string) => {
     if (urlProject === projectId) return;
-    router.push(`/boards?project=${projectId}`)
+    router.push(`/boards?project_id=${projectId}`)
   }
 
   useEffect(() => {

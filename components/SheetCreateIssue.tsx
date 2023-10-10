@@ -7,11 +7,11 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "@/components/ui/sheet"
-import EDITOR_TOOLS from "@/tools/EditorJsTools";
-import EditorJS from '@editorjs/editorjs';
 import { FormEvent, useEffect, useState } from "react";
 import TeamMemberSelect from "./TeamMemberSelect";
 import BoardService from "@/service/BoardsService";
+import IssueLabelSelect from "./IssueLabelSelect";
+import EditorJsWrapper from "./EditorJsWrapper";
 
 
 interface SheetCreateIssueProps {
@@ -29,17 +29,6 @@ export default function SheetCreateIssue({ projectInfo, refetch, children }: She
   const [label, setLabel] = useState<string>()
 
   const openEvent = (event: boolean) => {
-    if (event) {
-      setTimeout(() => {
-        new EditorJS({
-          holder: "editorjs",
-          tools: EDITOR_TOOLS,
-          placeholder: "Description",
-          inlineToolbar: true,
-          hideToolbar: false,
-        })
-      }, 500)
-    }
     setIsOpen(event)
   }
 
@@ -54,12 +43,12 @@ export default function SheetCreateIssue({ projectInfo, refetch, children }: She
       points: !!points ? Number(points) : 0,
       label
     }
-  
+
     await BoardService.createBoard(newIssue)
-    .then(() => {
-      refetch && refetch()
-      setIsOpen(false)
-    })
+      .then(() => {
+        refetch && refetch()
+        setIsOpen(false)
+      })
   }
 
   return (
@@ -76,17 +65,17 @@ export default function SheetCreateIssue({ projectInfo, refetch, children }: She
         </SheetHeader>
         <form className="flex flex-col gap-4 mt-4" onSubmit={submitForm}>
           <input type="text" className="input-themed" placeholder="Title" onChange={($event) => setTitle($event.target.value)} required />
-          <div id="editorjs" className="px-4 py-1 border rounded-md min-h-[200px]"></div>
+          <EditorJsWrapper />
           {
             projectInfo?.team_id && (
               <div className="flex gap-4">
-                <TeamMemberSelect placeholder="Reporter" teamId={projectInfo.team_id} selectMember={setReporterId}  required />
+                <TeamMemberSelect placeholder="Reporter" teamId={projectInfo.team_id} selectMember={setReporterId} required />
                 <TeamMemberSelect placeholder="Assignee" teamId={projectInfo.team_id} selectMember={setAssigneeId} required />
               </div>
             )}
           <div className="flex gap-4">
             <input type="number" className="input-themed" placeholder="Points" onChange={($event) => setPoints($event.target.value)} />
-            <input type="text" className="input-themed" placeholder="Label"  onChange={($event) => setLabel($event.target.value)} />
+            <IssueLabelSelect selectIssue={setLabel} />
           </div>
           <button className="flex w-full py-3 justify-center items-center bg-teal-500 hover:bg-teal-600 transition-colors text-white rounded-md text-sm" type="submit">
             Create issue

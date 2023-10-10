@@ -1,3 +1,4 @@
+'use client'
 import { ITeams } from "@/types/Team"
 import { CheckCircle, Copy, Delete, Edit, Edit2, MoreVertical, Trash } from "react-feather"
 import {

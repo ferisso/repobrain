@@ -12,14 +12,14 @@ export default function AvatarCard({ user, hoverable = true }: { user: IUsers, h
     <HoverCard>
     <HoverCardTrigger>
       <Avatar className={`h-7 w-7 transition-all cursor-pointer border ${hoverable && 'hover:h-8 hover:w-8'}`}>
-        <AvatarImage src={user.image} />
+        <AvatarImage src={user.image} alt="user image" />
         <AvatarFallback className="text-sm">{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
       </Avatar>
     </HoverCardTrigger>
     <HoverCardContent>
       <div className="flex items-center gap-2">
         <Avatar className="h-10 w-10">
-          <AvatarImage src={user.image} />
+          <AvatarImage src={user.image} alt="user image" />
           <AvatarFallback>{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>
         </Avatar>
         <div className="flex flex-col items-start">

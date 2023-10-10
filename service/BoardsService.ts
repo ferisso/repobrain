@@ -2,10 +2,18 @@ import { IBoards } from "@/types/Boards";
 import APIService from "./APIService";
 
 const BoardService = {
-  async getBoards(boardId: string): Promise<IBoards[]> {
+  async getBoardsById(boardId: string): Promise<IBoards[]> {
     const boards = await APIService.request({
       method: 'get',
       route: '/boards/' + boardId,
+    })
+    return boards.data
+  },
+
+  async getBoards(query: string): Promise<IBoards[]> {
+    const boards = await APIService.request({
+      method: 'get',
+      route: '/boards?' + query,
     })
     return boards.data
   },

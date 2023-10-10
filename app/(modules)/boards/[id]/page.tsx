@@ -1,4 +1,5 @@
 'use client'
+import ChipIssueLabels from "@/components/ChipIssueLabels"
 import TeamMemberSelect from "@/components/TeamMemberSelect"
 import BoardsService from "@/service/BoardsService"
 import { ArrowLeft, Pencil, ArrowRight } from "lucide-react"
@@ -8,7 +9,7 @@ import { Delete, Trash, Trash2 } from "react-feather"
 
 export default async function Board({ params }: { params: { id: string } }) {
   const route = useRouter()
-  const boards = await BoardsService.getBoards(params.id)
+  const boards = await BoardsService.getBoardsById(params.id)
   const board =  boards[0] || undefined
 
   const deleteBoard = async () => {
@@ -55,9 +56,7 @@ export default async function Board({ params }: { params: { id: string } }) {
             }
             {
               board.label && (
-                <div className="lowercase rounded-full border border-blue-500 text-blue-500 py-1 px-2 text-xs">
-                { board?.label }
-              </div>
+                <ChipIssueLabels label={board.label} className="rounded-full py-1 px-2 text-xs" />
               )
             }
           </div>

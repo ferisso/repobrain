@@ -9,10 +9,7 @@ import SimpleImage from "@editorjs/simple-image";
 
 const EDITOR_TOOLS = {
   code: Code,
-  header: {
-    class: Header,
-    inlineToolbar: true,
-  },
+  header: Header,
   checklist: Checklist,
   table: Table,
   list: {
@@ -25,3 +22,4 @@ const EDITOR_TOOLS = {
 };
 
 export default EDITOR_TOOLS;
+
