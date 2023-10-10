@@ -11,8 +11,13 @@ import { FormEvent, useEffect, useState } from "react";
 import TeamMemberSelect from "./TeamMemberSelect";
 import BoardService from "@/service/BoardsService";
 import IssueLabelSelect from "./IssueLabelSelect";
-import EditorJsWrapper from "./EditorJsWrapper";
+import dynamic from 'next/dynamic';
 
+
+let MyEditor: any;
+if (typeof window !== "undefined") {
+  MyEditor = dynamic(() => import('./EditorJsWrapper'), {ssr: false});
+}
 
 interface SheetCreateIssueProps {
   projectInfo: any,
@@ -65,7 +70,7 @@ export default function SheetCreateIssue({ projectInfo, refetch, children }: She
         </SheetHeader>
         <form className="flex flex-col gap-4 mt-4" onSubmit={submitForm}>
           <input type="text" className="input-themed" placeholder="Title" onChange={($event) => setTitle($event.target.value)} required />
-          <EditorJsWrapper />
+          { MyEditor && <MyEditor /> }
           {
             projectInfo?.team_id && (
               <div className="flex gap-4">
