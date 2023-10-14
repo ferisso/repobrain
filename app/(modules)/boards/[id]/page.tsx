@@ -5,12 +5,21 @@ import BoardsService from "@/service/BoardsService"
 import { ArrowLeft, Pencil, ArrowRight } from "lucide-react"
 import { useRouter } from "next/navigation"
 import { Delete, Trash, Trash2 } from "react-feather"
+import dynamic from 'next/dynamic';
+
+
+let EditorJs: any;
+if (typeof window !== "undefined") {
+  EditorJs = dynamic(() => import('@/components/EditorJsWrapper'), {ssr: false});
+}
 
 
 export default async function Board({ params }: { params: { id: string } }) {
   const route = useRouter()
   const boards = await BoardsService.getBoardsById(params.id)
   const board =  boards[0] || undefined
+
+  console.log(board)
 
   const deleteBoard = async () => {
     await BoardsService.deleteBoard(params.id)
@@ -70,6 +79,7 @@ export default async function Board({ params }: { params: { id: string } }) {
         </div>
       </div>
       <div className="flex flex-col gap-2 border rounded-md p-2 mt-4 w-full min-h-[400px]">
+      { EditorJs && <EditorJs data={board.description && JSON.parse(board.description)} /> }
       </div>
     </>
   )

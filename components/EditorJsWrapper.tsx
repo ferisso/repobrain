@@ -4,7 +4,7 @@ import { useEffect, useRef } from 'react';
 import EditorJS from '@editorjs/editorjs';
  
 
-export default function EditorJsWrapper() {
+export default function EditorJsWrapper({ data, setData }: { data?: any, setData: (editorData: any) => void }) {
     //add a reference to editor
     const ref = useRef<any>();
 
@@ -15,7 +15,12 @@ export default function EditorJsWrapper() {
         const editor = new EditorJS({
           holder: 'editorjs',
           tools: EDITOR_TOOLS,
-          placeholder: 'Description'
+          placeholder: 'Description',
+          data: data,
+          async onChange(api) {
+            const result = await api.saver.save()
+            setData(JSON.stringify(result))
+          },
         });
         ref.current = editor;
       }

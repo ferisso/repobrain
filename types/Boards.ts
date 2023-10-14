@@ -13,10 +13,11 @@ export interface IBoards {
     issue?: number;
     label?: TLabels | string;
     project_id?: string;
-    project?: IProjects
+    project?: IProjects;
+    priority?: number;
     onBoardStatus?: 0 | 1 | 2| 3 | 4 | 5;
-    reporter_info?: IUsers,
-    assignee_info?: IUsers,
+    reporter_info?: IUsers;
+    assignee_info?: IUsers;
     createdAt?: Date;
     updatedAt?: Date;
 }

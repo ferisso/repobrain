@@ -4,6 +4,7 @@ import Footer from "@/components/Footer"
 import Header from "@/components/Header"
 import MainLoader from "@/components/MainLoader"
 import { useSession } from "next-auth/react"
+import { Suspense } from "react"
 
 export default function Layout({
   children,
@@ -15,7 +16,7 @@ export default function Layout({
   })
   return (
     data && data?.user ? (
-      <>
+      <Suspense fallback={<MainLoader />}>
         <Header />
         <div className="container mx-auto px-14 py-4">
           <div className="grid flex-1 flex-col gap-6 grid-cols-[160px_1fr]">
@@ -26,7 +27,7 @@ export default function Layout({
           </div>
         </div>
         <Footer />
-      </>
+      </Suspense>
     )
       : <MainLoader />
   )

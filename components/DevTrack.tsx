@@ -6,6 +6,7 @@ import AvatarCard from "./AvatarCard";
 import BoardService from "@/service/BoardsService";
 import { useRouter } from "next/navigation";
 import ChipIssueLabels from '@/components/ChipIssueLabels'
+import PriorityDots from "./PriorityDots";
 
 interface DevTrackProps {
   boards?: IBoards[],
@@ -53,7 +54,7 @@ export default function DevTrack({ boards }: DevTrackProps) {
 
   return (
     <>
-      <div className="flex justify-between gap-[10px] p-[10px] text-zinc-900">
+      <div className="flex justify-between gap-[10px] p-[10px] min-w-[972px] text-zinc-900">
         <span className="board-col-title">Blocked</span>
         <span className="board-col-title">To do</span>
         <span className="board-col-title">In progress</span>
@@ -70,6 +71,8 @@ export default function DevTrack({ boards }: DevTrackProps) {
               onDragStop={changeBoardStatus}
               useCSSTransforms={false}
               autoSize={true}
+              rowHeight={165}
+              className="min-w-[972px]"
             >
               {layout?.map((l: any, index: number) => (
                 <div className="z-0 flex flex-col justify-between p-3 rounded-md text-left cursor-move border shadow-sm min-w-[150px] hover:backdrop-blur-sm" key={l.id} onDoubleClick={() => openCard(l.id)}>
@@ -86,8 +89,9 @@ export default function DevTrack({ boards }: DevTrackProps) {
                   </div>
 
                   <div className="flex justify-between items-center">
-                    <div className="px-3 py-1 rounded-2xl bg-zinc-200 w-fit text-[10px] text-zinc-600 font-bold h-fit">
-                      <a>{l.points}</a>
+                    <div className="flex gap-2 items-center">
+                      <p className="px-3 py-1 rounded-2xl bg-zinc-200 w-fit text-[10px] text-zinc-600 font-bold h-fit">{l.points}</p>
+                    <PriorityDots priority={l.priority} />
                     </div>
                     <AvatarCard user={l.assignee_info} hoverable={false} />
                   </div>

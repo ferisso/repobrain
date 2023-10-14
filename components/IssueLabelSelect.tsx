@@ -14,7 +14,7 @@ export default function IssueLabelSelect({ required, disabled, placeholder = "Se
   const labels: TLabels[] = ['documentation', 'enhancement', 'bug']
   return (
     <Select onValueChange={selectIssue} required={required} disabled={disabled}>
-      <SelectTrigger className="max-w-[260px]">
+      <SelectTrigger>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
