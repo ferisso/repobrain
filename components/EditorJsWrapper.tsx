@@ -2,9 +2,14 @@
 import EDITOR_TOOLS from '@/tools/EditorJsTools';
 import { useEffect, useRef } from 'react';
 import EditorJS from '@editorjs/editorjs';
- 
 
-export default function EditorJsWrapper({ data, setData }: { data?: any, setData: (editorData: any) => void }) {
+interface EditorJsWrapperProps {
+  data?: any, 
+  setData?: (editorData: any) => void, 
+  className?: string
+}
+ 
+export default function EditorJsWrapper({ data, setData, className }: EditorJsWrapperProps) {
     //add a reference to editor
     const ref = useRef<any>();
 
@@ -19,7 +24,7 @@ export default function EditorJsWrapper({ data, setData }: { data?: any, setData
           data: data,
           async onChange(api) {
             const result = await api.saver.save()
-            setData(JSON.stringify(result))
+            setData && setData(JSON.stringify(result))
           },
         });
         ref.current = editor;
@@ -34,5 +39,5 @@ export default function EditorJsWrapper({ data, setData }: { data?: any, setData
     }, []);
   
   
-    return <div id="editorjs" className="px-4 py-1 border rounded-md min-h-[200px]" />;
+    return <div id="editorjs" className={className} />;
 }

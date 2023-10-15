@@ -102,7 +102,7 @@ export default function SheetCreateIssue({ projectInfo, refetch, children }: She
         </SheetHeader>
         <form className="flex flex-col gap-4 mt-4" onSubmit={submitForm}>
           <input type="text" className="input-themed" placeholder="Title" onChange={($event) => setTitle($event.target.value)} required />
-          {EditorJs && <EditorJs setData={setDescription} />}
+          {EditorJs && <EditorJs setData={setDescription} className="px-4 py-1 border rounded-md min-h-[200px]" />}
           {
             projectInfo?.team_id && (
               <div className="flex gap-4">

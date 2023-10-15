@@ -5,7 +5,7 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip"
 
-export default function PriorityDots({ priority }: { priority: number }) {
+export default function PriorityDots({ priority }: { priority?: number }) {
 
   const dotColor = () => {
     switch (priority) {
@@ -25,6 +25,7 @@ export default function PriorityDots({ priority }: { priority: number }) {
   }
 
   const createPriority = (): Array<number> | [] => {
+    if (!priority) return [];
     const arr = []
     for (let index = 0; index < priority; index++) {
       arr.push(index);
@@ -33,7 +34,7 @@ export default function PriorityDots({ priority }: { priority: number }) {
   }
 
   return (
-    priority > 0 ?
+    priority && priority > 0 ?
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger aria-label="Priority dots">
