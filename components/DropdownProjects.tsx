@@ -41,7 +41,7 @@ export default function DropdownProjects(props: DropdownProjectsProps) {
 
   return (
     <Select onValueChange={selectProject} defaultValue={urlProject ? urlProject : undefined} disabled={isLoading || !projects?.length}>
-      <SelectTrigger className="w-[180px]">
+      <SelectTrigger className="w-[180px]" aria-label="Project dropdown menu">
         <SelectValue placeholder="Select a project" />
       </SelectTrigger>
       <SelectContent>

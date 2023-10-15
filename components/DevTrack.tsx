@@ -84,7 +84,7 @@ export default function DevTrack({ boards }: DevTrackProps) {
                     </span>
                     {
                       l.issue_url &&
-                      <a href={l.issue_url} target="_blank" rel="noopener noreferrer">
+                      <a href={l.issue_url} target="_blank" rel="noopener noreferrer" aria-label="Github issue">
                         <GithubIcon size={16} className="text-zinc-600 hover:text-zinc-800" />
                       </a>
                     }

@@ -120,7 +120,7 @@ export default function SheetCreateIssue({ projectInfo, refetch, children }: She
               <div className="flex items-center gap-2">
                 <Checkbox
                   id="newIssue"
-                  className="data-[state=checked]:bg-teal-500 data-[state=checked]:border-teal-500 h-5 w-5"
+                  className="data-[state=checked]:bg-teal-500 data-[state=checked]:border-teal-500 h-5 w-5 border-zinc-300"
                   onCheckedChange={(e: boolean) => setCreateIssue(e)}
                 />
                 <label htmlFor="newIssue" className="text-sm text-zinc-700">

@@ -11,7 +11,7 @@ export default function AvatarCard({ user, hoverable = true }: { user: IUsers, h
   return (
     hoverable ? 
     <HoverCard>
-      <HoverCardTrigger>
+      <HoverCardTrigger href="#">
         <Avatar className={`h-7 w-7 transition-all cursor-pointer border ${hoverable && 'hover:h-8 hover:w-8'}`}>
           <AvatarImage src={user.image} alt="user image" />
           <AvatarFallback className="text-sm">{user.name.substring(0, 2).toUpperCase()}</AvatarFallback>

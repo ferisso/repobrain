@@ -20,6 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <head>
         <title>Repobrain</title>
+        <meta name="description" content="Repobrain app" />
       </head>
       <body className={inter.className}>
         <Suspense fallback={<MainLoader />}>
