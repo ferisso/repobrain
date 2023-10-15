@@ -80,7 +80,7 @@ export default function SheetCreateIssue({ projectInfo, refetch, children }: She
 
   const mountIssueGithub = () => {
     return {
-      owner: 'ferisso',
+      owner: projectInfo?.owner_name,
       repo: projectInfo?.name,
       title,
       body: description,
