@@ -10,7 +10,8 @@ export interface IBoards {
     assignee?: string;
     status?: number;
     points?: number;
-    issue?: number;
+    issue_id?: string;
+    issue_url?: string;
     label?: TLabels | string;
     project_id?: string;
     project?: IProjects;

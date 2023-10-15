@@ -88,7 +88,8 @@ export default function DialogCreateProject({ children, refreash }: DialogCreate
     const newProject = {
       name: selectedRepoData.name,
       url: selectedRepoData.url,
-      team_id: selectedTeam
+      team_id: selectedTeam,
+      owner_name: selectedRepoData.owner.login,
     }
     await ProjectService.createProject(newProject)
       .finally(() => {

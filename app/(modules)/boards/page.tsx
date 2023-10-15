@@ -51,7 +51,7 @@ export default function Boards() {
               <AvatarList users={selectedProject?.team?.members} isSelectable />
             </span>
             <SheetCreateIssue projectInfo={selectedProject} refetch={refetch}>
-              <div className="flex items-center justify-center gap-1 text-white bg-teal-500 py-2 px-4 rounded-md text-xs w-fit self-end mt-2 hover:bg-teal-600 disabled:bg-zinc-300">
+              <div className="flex items-center justify-center gap-1 text-white bg-teal-500 py-2 px-4 rounded-md text-xs w-fit self-end hover:bg-teal-600 disabled:bg-zinc-300">
                 <Plus size={18} />
                 Open issue
               </div>

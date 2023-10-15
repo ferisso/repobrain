@@ -1,10 +1,13 @@
 'use client'
 import Logo from "@/components/Logo";
+import HandleLoginService from "@/service/HandleLoginService";
+import createUser from "@/service/HandleRegisterService";
 import { signIn } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useRef } from "react";
 import { GitHub } from "react-feather";
 import { SubmitHandler, useForm } from "react-hook-form";
+import { toast } from "react-toastify";
 
 interface IRegisterForm {
   name: string;
@@ -25,7 +28,23 @@ export default function Register() {
   const password = useRef({});
   password.current = watch('password')
   const onSubmit: SubmitHandler<IRegisterForm> = data => {
-    console.log(data)
+    const registerInfo = {
+      name: data.name,
+      lastName: data.lastName,
+      email: data.email,
+      password: data.password
+    }
+    createUser(registerInfo)
+    .then((res) => {
+      if (res.status == 201) {
+        toast.success('Usuário criado com sucesso')
+        router.push('/login')
+        setTimeout(() => {
+          toast.info('Faça login para continuar')
+        }, 500)
+      }
+    })
+    .catch(err => toast.error(err))
   };
 
   return (

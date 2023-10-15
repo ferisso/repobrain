@@ -7,6 +7,7 @@ import BoardService from "@/service/BoardsService";
 import { useRouter } from "next/navigation";
 import ChipIssueLabels from '@/components/ChipIssueLabels'
 import PriorityDots from "./PriorityDots";
+import { GitBranch, GithubIcon } from "lucide-react";
 
 interface DevTrackProps {
   boards?: IBoards[],
@@ -64,40 +65,50 @@ export default function DevTrack({ boards }: DevTrackProps) {
       </div>
       {
         layout && (
-            <ResponsiveGridLayout
-              layouts={{ lg: layout }}
-              cols={{ lg: 6, md: 6, sm: 6, xs: 6, xxs: 6 }}
-              isResizable={false}
-              onDragStop={changeBoardStatus}
-              useCSSTransforms={false}
-              autoSize={true}
-              rowHeight={165}
-              className="min-w-[972px]"
-            >
-              {layout?.map((l: any, index: number) => (
-                <div className="z-0 flex flex-col justify-between p-3 rounded-md text-left cursor-move border shadow-sm min-w-[150px] hover:backdrop-blur-sm" key={l.id} onDoubleClick={() => openCard(l.id)}>
-                  <div className="flex flex-col">
-                    <span className="text-xs text-zinc-500"># {index + 1}</span>
-                    <span className="text-sm mb-2">
-                      {
-                        l.title.length > 40 ? `${l.title.substring(0, 40)}...` : l.title
-                      }
+          <ResponsiveGridLayout
+            layouts={{ lg: layout }}
+            cols={{ lg: 6, md: 6, sm: 6, xs: 6, xxs: 6 }}
+            isResizable={false}
+            onDragStop={changeBoardStatus}
+            useCSSTransforms={false}
+            autoSize={true}
+            rowHeight={165}
+            className="min-w-[972px]"
+          >
+            {layout?.map((l: any, index: number) => (
+              <div className="z-0 flex flex-col justify-between p-3 rounded-md text-left cursor-move border shadow-sm min-w-[150px] hover:backdrop-blur-sm" key={l.id} onDoubleClick={() => openCard(l.id)}>
+                <div className="flex flex-col">
+                  <div className="flex justify-between items-center mb-0.5">
+                    <span className="text-xs text-zinc-500 ">
+                      # {index + 1}
                     </span>
                     {
-                      !!l.label && <ChipIssueLabels label={l.label} className="py-0.5 px-2" />
+                      l.issue_url &&
+                      <a href={l.issue_url} target="_blank" rel="noopener noreferrer">
+                        <GithubIcon size={16} className="text-zinc-600 hover:text-zinc-800" />
+                      </a>
                     }
                   </div>
-
-                  <div className="flex justify-between items-center">
-                    <div className="flex gap-2 items-center">
-                      <p className="px-3 py-1 rounded-2xl bg-zinc-200 w-fit text-[10px] text-zinc-600 font-bold h-fit">{l.points}</p>
-                    <PriorityDots priority={l.priority} />
-                    </div>
-                    <AvatarCard user={l.assignee_info} hoverable={false} />
-                  </div>
+                  <span className="text-sm mb-2">
+                    {
+                      l.title.length > 40 ? `${l.title.substring(0, 40)}...` : l.title
+                    }
+                  </span>
+                  {
+                    !!l.label && <ChipIssueLabels label={l.label} className="py-0.5 px-2" />
+                  }
                 </div>
-              ))}
-            </ResponsiveGridLayout>
+
+                <div className="flex justify-between items-center">
+                  <div className="flex gap-2 items-center">
+                    <p className="px-3 py-1 rounded-2xl bg-zinc-200 w-fit text-[10px] text-zinc-600 font-bold h-fit">{l.points}</p>
+                    <PriorityDots priority={l.priority} />
+                  </div>
+                  <AvatarCard user={l.assignee_info} hoverable={false} />
+                </div>
+              </div>
+            ))}
+          </ResponsiveGridLayout>
         )
       }
     </>

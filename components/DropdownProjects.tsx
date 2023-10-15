@@ -40,7 +40,7 @@ export default function DropdownProjects(props: DropdownProjectsProps) {
   }, [projects])
 
   return (
-    <Select onValueChange={selectProject} defaultValue={urlProject ? urlProject : undefined}>
+    <Select onValueChange={selectProject} defaultValue={urlProject ? urlProject : undefined} disabled={isLoading || !projects?.length}>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Select a project" />
       </SelectTrigger>

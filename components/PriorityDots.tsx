@@ -14,7 +14,7 @@ export default function PriorityDots({ priority }: { priority: number }) {
       case 2: 
         return 'bg-yellow-600'
       case 3:
-        return 'bg-ambar-600'
+        return 'bg-amber-600'
       case 4:
           return 'bg-orange-600'
       case 5:
@@ -33,12 +33,12 @@ export default function PriorityDots({ priority }: { priority: number }) {
   }
 
   return (
-    priority ?
+    priority > 0 ?
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger>
             <div className="flex gap-1">
-              {priority ? createPriority().map(item => (<div key={`priority-${item}`} className={`h-1.5 w-1.5 ${dotColor()} rounded-full`} />)) : <></>}
+              {createPriority().map(item => (<div key={`priority-${item}`} className={`h-1.5 w-1.5 ${dotColor()} rounded-full`} />))}
             </div>
           </TooltipTrigger>
           <TooltipContent>
