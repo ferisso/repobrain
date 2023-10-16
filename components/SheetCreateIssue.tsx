@@ -69,7 +69,7 @@ export default function SheetCreateIssue({ projectInfo, refetch, children }: She
       priority: !!priority ? Number(priority) : 0,
       points: !!points ? Number(points) : 0,
       label,
-      issue_id: githubRes && githubRes.id,
+      issue_id: githubRes && String(githubRes.id),
       issue_url: githubRes && githubRes.url
     }
 
