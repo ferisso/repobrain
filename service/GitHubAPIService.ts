@@ -63,18 +63,30 @@ const GitHubAPIService = {
     return res.data
   },
 
-  async GetRepoCommits(data: any) {
-    const endpoint = `/repos/${data?.owner_name}/${data?.name}/commits?sha=main`;
+  async GetRepoCommits(data: any, page = 1): Promise<any> {
+    const endpoint = `/repos/${data?.owner_name}/${data?.name}/commits?sha=main&per_page=100&page=${page}`;
+    let commits = []
 
     const res = await this.GithubConsumer({
       method: 'get',
       endpoint
-    })
-    return res.data
+    });
+
+    if (res.data.length > 0) {
+      commits.push(...res.data);
+  
+      // Se houver mais páginas, continue a busca
+      if (res.headers.link && res.headers.link.includes('rel="next"')) {
+        const nextPage = page + 1;
+        commits.push(...await this.GetRepoCommits(data, nextPage));
+      }
+    }
+  
+    return commits;
   },
 
   async GetRepoFilesLength(data: any) {
-    const endpoint = `/repos/${data?.owner_name}/${data?.name}/contents?ref=main`;
+    const endpoint = `/repos/${data?.owner_name}/${data?.name}/contents?ref=main&per_page=100`;
 
     const res = await this.GithubConsumer({
       method: 'get',
@@ -90,6 +102,17 @@ const GitHubAPIService = {
       method: 'get',
       endpoint
     })
+    return res.data
+  },
+
+  async GetContributorsCommits(data: any) {
+    const endpoint = `/repos/${data?.owner_name}/${data?.name}/stats/contributors`;
+
+    const res = await this.GithubConsumer({
+      method: 'get',
+      endpoint
+    })
+    if(res.status === 202) this.GetContributorsCommits(data)
     return res.data
   },
 }

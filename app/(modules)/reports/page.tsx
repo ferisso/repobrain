@@ -8,6 +8,27 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useQuery } from "react-query";
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+  LineElement,
+  PointElement,
+} from 'chart.js';
+import { Bar, Line } from 'react-chartjs-2';
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  PointElement,
+  LineElement,
+  Title,
+  Tooltip,
+  Legend
+);;
 
 export default function Reports() {
   const router = useRouter();
@@ -42,6 +63,7 @@ export default function Reports() {
   const [comparisson, setComparisson] = useState<any>([])
   const [additions, setAdditions] = useState<any>(0)
   const [deletions, setDeletions] = useState<any>(0)
+  const [lastYearCommits, setLastYearCommits] = useState<any>([])
 
   const getReports = async () => {
     setContributors([]);
@@ -50,23 +72,25 @@ export default function Reports() {
     setComparisson([]);
     setAdditions(0);
     setDeletions(0)
+    setLastYearCommits([])
 
 
     const contributorsApi = await GitHubAPIService.GetRepoContributions(
       selectedProject
     )
-    const commitsaApi = await GitHubAPIService.GetRepoCommits(
-      selectedProject
+    setContributors(contributorsApi);
+
+    const commitsApi = await GitHubAPIService.GetRepoCommits(
+      selectedProject,
     )
-    setContributors(contributorsApi)
-    setCommits(commitsaApi)
+    setCommits(commitsApi)
 
     const filesApi = await GitHubAPIService.GetRepoFilesLength(
       selectedProject
     )
     let sum = 0
-    filesApi.forEach((x: any) => {
-      sum += x.size
+    filesApi?.forEach((x: any) => {
+      sum += x?.size
     })
     setFiles(sum)
     
@@ -74,13 +98,10 @@ export default function Reports() {
     // console.log('commits', commits);
     // console.log('contributors', contributors)
 
-    console.log(commitsaApi[commitsaApi.length-1]?.sha,
-      commitsaApi[0]?.sha)
-
     let compare = await GitHubAPIService.GetRepoComparisson(
       selectedProject,
-      commitsaApi[commitsaApi.length-1]?.sha,
-      commitsaApi[0]?.sha
+      commitsApi[commitsApi.length-1]?.sha,
+      commitsApi[0]?.sha
     )
     setComparisson(compare)
     console.log('comparisson', comparisson)
@@ -88,9 +109,66 @@ export default function Reports() {
     compare?.files?.forEach((x: any) => {
       setAdditions((curr: any) => curr + x.additions);
       setDeletions((curr: any) => curr + x.deletions);
+    });
 
-    })
+    let lastYearCommitsApi = await GitHubAPIService.GetContributorsCommits(selectedProject);
+    setLastYearCommits(lastYearCommitsApi)
+    buildContributorsChart()
   };
+
+  const buildContributorsChart = () => {
+
+    const today = new Date();
+    let lastWeeks = [];
+
+    for (let i = 0; i < lastYearCommits[0]?.weeks.length; i++) {
+      const date = new Date(today);
+      date.setDate(date.getDate() - i * 7); 
+
+      const day = date.getDate(); 
+      const month = date.getMonth() + 1; 
+      const year = date.getFullYear(); 
+
+      lastWeeks.push(`${year}-${month}-${day}`);
+    }
+    lastWeeks = lastWeeks.reverse();
+
+    const chartColors = [
+      'rgba(255, 99, 132)',
+      'rgba(54, 162, 235)',
+      'rgba(255, 206, 86)',
+      'rgba(75, 192, 192)',
+      'rgba(153, 102, 255)',
+      'rgba(255, 159, 64)',
+    ]
+
+    let data = {
+      labels: lastWeeks,
+      datasets: lastYearCommits.map((x: any, i:number) => {
+        return{
+          label: x?.author?.login,
+          backgroundColor: chartColors[i],
+          borderColor: chartColors[i],
+          data: x?.weeks?.map((w: any) => {return w.c})
+        }
+      })
+    }
+
+    const options = {
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'top' as const,
+        },
+        title: {
+          display: true,
+          text: 'Chart.js Line Chart',
+        },
+      },
+    };
+    
+    return {data, options}
+  }
 
   return (
     <>
@@ -109,8 +187,9 @@ export default function Reports() {
       <div className="mt-4 w-full h-full min-h-[400px] flex justify-center items-center flex-col gap-3 border border-dashed text-center p-4 rounded-md">
         {selectedProject ? (
           <>
+            {lastYearCommits.length && <Line options={buildContributorsChart().options} data={buildContributorsChart().data} />}
             <p>
-              Excluding merges, {contributors.length} authors have pushed {commits.length} commits to main. On main, we have {files} bytes in files, and there
+              Excluding merges, {contributors.length} authors have pushed {commits.length} commits to main. On the main branch, we have {files} bytes in files, and there
               have been {additions} additions and {deletions} deletions.
             </p>
           </>
