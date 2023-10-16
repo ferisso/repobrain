@@ -116,6 +116,17 @@ const GitHubAPIService = {
     return res.data
   },
 
+  async GetLastModifiedFile(data: any, sha: string) {
+    const endpoint = `/repos/${data?.owner_name}/${data?.name}/commits/${sha}`;
+
+    const res = await this.GithubConsumer({
+      method: 'get',
+      endpoint
+    })
+    if (res.status === 202) this.GetLastModifiedFile(data, sha)
+    return res.data
+  },
+
   async CloseAnIssue({ owner, project, issue }: { owner: string, project: string, issue: string }) {
     const endpoint = `/repos/${owner}/${project}/issues/${issue}`
 

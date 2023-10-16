@@ -3,7 +3,7 @@
 import DropdownProjects from "@/components/DropdownProjects";
 import BoardService from "@/service/BoardsService";
 import GitHubAPIService from "@/service/GitHubAPIService";
-import { ChartLineDown, FolderDashed, Plus } from "@phosphor-icons/react";
+import { ChartLineDown, FolderDashed, Plus, File } from "@phosphor-icons/react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -29,7 +29,7 @@ ChartJS.register(
   Title,
   Tooltip,
   Legend
-);;
+);
 
 export default function Reports() {
   const router = useRouter();
@@ -65,6 +65,7 @@ export default function Reports() {
   const [additions, setAdditions] = useState<any>(0)
   const [deletions, setDeletions] = useState<any>(0)
   const [lastYearCommits, setLastYearCommits] = useState<any>([])
+  const [lastModifiedFile, setLastModifiedFile] = useState<any>(null)
 
   const getReports = async () => {
     setContributors([]);
@@ -74,6 +75,7 @@ export default function Reports() {
     setAdditions(0);
     setDeletions(0)
     setLastYearCommits([])
+    setLastModifiedFile(null)
 
 
     const contributorsApi = await GitHubAPIService.GetRepoContributions(
@@ -114,7 +116,11 @@ export default function Reports() {
 
     let lastYearCommitsApi = await GitHubAPIService.GetContributorsCommits(selectedProject);
     setLastYearCommits(lastYearCommitsApi)
-    buildContributorsChart()
+    buildContributorsChart();
+
+    let lastModifiedFileApi = await GitHubAPIService.GetLastModifiedFile(selectedProject, commitsApi[0]?.sha);
+    setLastModifiedFile(lastModifiedFileApi)
+    console.log(lastModifiedFileApi)
   };
 
   const buildContributorsChart = () => {
@@ -185,16 +191,16 @@ export default function Reports() {
         />
       </div>
       <div className="mt-4 w-full h-full min-h-[400px] flex justify-center items-center flex-col gap-3 border border-dashed text-center p-4 rounded-md">
-        {lastYearCommits.length && selectedProject ? (
+        {lastYearCommits.length && selectedProject && lastModifiedFile ? (
           <>
             <div className="flex justify-between w-full gap-8">
               <div className="bg-zinc-100 py-2 px-3 rounded-md w-2/3">
-                <span className="font-semibold text-zinc-800">Last year commits</span>
+                <span className="font-semibold text-zinc-800 mb-4">Last year commits</span>
                 <Line options={buildContributorsChart().options} data={buildContributorsChart().data} />
               </div>
               <div className="flex flex-col w-1/3 gap-8">
                 <div className="flex flex-col bg-zinc-100 rounded-md py-2 px-3">
-                  <span className="font-semibold text-zinc-800">Total of contributions</span>
+                  <span className="font-semibold text-zinc-800 mb-4">Total of contributions</span>
                   <div className="flex gap-3 items-center font-light text-md transition-colors py-4 px-5">
                     {contributors.map((c: any) => 
                     <div className="flex flex-col" key={c?.id}>
@@ -204,15 +210,29 @@ export default function Reports() {
                     )}
                   </div>
                 </div>
-                
                 <p className="text-zinc-700">
                   Excluding merges, <b>{contributors.length}</b> authors have pushed <b>{commits.length}</b> commits to main. On the main branch, we have <b>{files}</b> bytes in files, and there
                   have been <b className="text-teal-500">{additions}</b> additions and <b className="text-red-500">{deletions}</b> deletions.
                 </p>
               </div>
-              
             </div>
-            
+            <div className="flex justify-between w-full gap-8">
+              <div className="flex flex-col bg-zinc-100 py-2 px-3 rounded-md w-1/3">
+                <span className="font-semibold text-zinc-800 mb-4">Last modified files</span>
+                <div className="flex flex-col gap-3">
+                  {lastModifiedFile.files?.map((f: any) => 
+                    <div className="flex justify-between text-sm text-zinc-500" key={f.sha}>
+                      <a className="flex" href={f.raw_url} target="_blank"><File size={20} />{f.filename}</a>
+                      <div className="flex"><b className="text-teal-500">+ {f.additions}</b><b className="text-red-500 ml-3">- {f.deletions}</b></div>
+                    </div>
+                  )}
+                </div>
+                <div className="flex justify-between mt-4">
+                  <span className="text-zinc-500">Author</span>
+                  <AvatarCard user={{name: lastModifiedFile.author.login, image:lastModifiedFile.author. avatar_url, id: lastModifiedFile.author.id, email: lastModifiedFile.author.email}} />
+                </div>
+              </div>
+            </div>
           </>
         ) : (
           <>
