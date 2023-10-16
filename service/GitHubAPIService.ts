@@ -14,7 +14,7 @@ interface IGithubIssue {
 interface IGithubConsumer {
   method: 'get' | 'post' | 'put' | 'delete',
   endpoint: string,
-  body: any
+  body?: any
 }
 
 // https://github.com/apps/repobrainapp/installations/new/permissions?target_id=48661787
@@ -53,9 +53,45 @@ const GitHubAPIService = {
     return res.data
   },
 
-  async GetRepoData(data: any) {
-    const endpoint = `/repos/${data.owner}/${data.repo}/issues`;
-  }
+  async GetRepoContributions(data: any) {
+    const endpoint = `/repos/${data?.owner_name}/${data?.name}/contributors`;
+
+    const res = await this.GithubConsumer({
+      method: 'get',
+      endpoint
+    })
+    return res.data
+  },
+
+  async GetRepoCommits(data: any) {
+    const endpoint = `/repos/${data?.owner_name}/${data?.name}/commits?sha=main`;
+
+    const res = await this.GithubConsumer({
+      method: 'get',
+      endpoint
+    })
+    return res.data
+  },
+
+  async GetRepoFilesLength(data: any) {
+    const endpoint = `/repos/${data?.owner_name}/${data?.name}/contents?ref=main`;
+
+    const res = await this.GithubConsumer({
+      method: 'get',
+      endpoint
+    })
+    return res.data
+  },
+
+  async GetRepoComparisson(data: any, oldSha: string, newSha:string) {
+    const endpoint = `/repos/${data?.owner_name}/${data?.name}/compare/${oldSha}...${newSha}`;
+
+    const res = await this.GithubConsumer({
+      method: 'get',
+      endpoint
+    })
+    return res.data
+  },
 }
 
 export default GitHubAPIService

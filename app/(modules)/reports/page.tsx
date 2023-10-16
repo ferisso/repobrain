@@ -2,6 +2,7 @@
 "use client";
 import DropdownProjects from "@/components/DropdownProjects";
 import BoardService from "@/service/BoardsService";
+import GitHubAPIService from "@/service/GitHubAPIService";
 import { ChartLineDown, FolderDashed, Plus } from "@phosphor-icons/react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
@@ -20,20 +21,76 @@ export default function Reports() {
   } = useQuery(
     "boards",
     async () => {
-      if (params.has("project_id")) {
-        // return await BoardService.getBoards(params.toString())
-        console.log(selectedProject);
+      if (params.has("project_id") || selectedProject) {
+        getReports();
       }
     },
     {
       refetchOnMount: true,
-      refetchOnWindowFocus: true,
+      refetchOnWindowFocus: false,
     }
   );
 
   useEffect(() => {
     refetch();
   }, [params, refetch]);
+
+
+  const [contributors, setContributors] = useState<any[]>([])
+  const [commits, setCommits] = useState<any[]>([])
+  const [files, setFiles] = useState<any>(null)
+  const [comparisson, setComparisson] = useState<any>([])
+  const [additions, setAdditions] = useState<any>(0)
+  const [deletions, setDeletions] = useState<any>(0)
+
+  const getReports = async () => {
+    setContributors([]);
+    setCommits([]);
+    setFiles(null);
+    setComparisson([]);
+    setAdditions(0);
+    setDeletions(0)
+
+
+    const contributorsApi = await GitHubAPIService.GetRepoContributions(
+      selectedProject
+    )
+    const commitsaApi = await GitHubAPIService.GetRepoCommits(
+      selectedProject
+    )
+    setContributors(contributorsApi)
+    setCommits(commitsaApi)
+
+    const filesApi = await GitHubAPIService.GetRepoFilesLength(
+      selectedProject
+    )
+    let sum = 0
+    filesApi.forEach((x: any) => {
+      sum += x.size
+    })
+    setFiles(sum)
+    
+    // console.log('files',files);
+    // console.log('commits', commits);
+    // console.log('contributors', contributors)
+
+    console.log(commitsaApi[commitsaApi.length-1]?.sha,
+      commitsaApi[0]?.sha)
+
+    let compare = await GitHubAPIService.GetRepoComparisson(
+      selectedProject,
+      commitsaApi[commitsaApi.length-1]?.sha,
+      commitsaApi[0]?.sha
+    )
+    setComparisson(compare)
+    console.log('comparisson', comparisson)
+
+    compare?.files?.forEach((x: any) => {
+      setAdditions((curr: any) => curr + x.additions);
+      setDeletions((curr: any) => curr + x.deletions);
+
+    })
+  };
 
   return (
     <>
@@ -52,12 +109,9 @@ export default function Reports() {
       <div className="mt-4 w-full h-full min-h-[400px] flex justify-center items-center flex-col gap-3 border border-dashed text-center p-4 rounded-md">
         {selectedProject ? (
           <>
-            <div className="h-16 w-16 rounded-full flex justify-center items-center bg-zinc-100">
-              <ChartLineDown size={32} weight="thin" />
-            </div>
-            <p>No reports avaiable</p>
-            <p className="font-light text-xs text-zinc-500">
-              When you start to using the plataform your reports will show here
+            <p>
+              Excluding merges, {contributors.length} authors have pushed {commits.length} commits to main. On main, we have {files} bytes in files, and there
+              have been {additions} additions and {deletions} deletions.
             </p>
           </>
         ) : (
@@ -66,9 +120,10 @@ export default function Reports() {
               <ChartLineDown size={32} weight="thin" />
             </div>
             <p>Select the project</p>
-              <p className="font-light text-xs text-zinc-500 max-w-xs">
-               To see a the reports select a project in the top right corner, if you don't have any create a new one
-              </p>
+            <p className="font-light text-xs text-zinc-500 max-w-xs">
+              To see a the reports select a project in the top right corner, if
+              you don't have any create a new one
+            </p>
           </>
         )}
       </div>
