@@ -54,7 +54,7 @@ const GitHubAPIService = {
   },
 
   async GetRepoData(data: any) {
-    const endpoint = `/repos/${issue.owner}/${issue.repo}/issues`;
+    const endpoint = `/repos/${data.owner}/${data.repo}/issues`;
   }
 }
 
