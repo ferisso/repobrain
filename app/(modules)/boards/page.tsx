@@ -41,7 +41,7 @@ export default function Boards() {
             Select the project to see the board
           </p>
         </span>
-        <DropdownProjects selectedProject={setSelectedProject} />
+        <DropdownProjects selectedProject={setSelectedProject} route={'boards'}/>
       </div>
       {
         selectedProject && (

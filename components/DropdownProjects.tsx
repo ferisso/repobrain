@@ -8,7 +8,8 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 
 interface DropdownProjectsProps {
-  selectedProject: (projectId: any) => void
+  selectedProject: (projectId: any) => void,
+  route: string
 }
 
 export default function DropdownProjects(props: DropdownProjectsProps) {
@@ -30,7 +31,7 @@ export default function DropdownProjects(props: DropdownProjectsProps) {
 
   const setRouteId = (projectId: string) => {
     if (urlProject === projectId) return;
-    router.push(`/boards?project_id=${projectId}`)
+    router.push(`/${props.route}?project_id=${projectId}`)
   }
 
   useEffect(() => {
