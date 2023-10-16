@@ -12,7 +12,7 @@ interface IGithubIssue {
 }
 
 interface IGithubConsumer {
-  method: 'get' | 'post' | 'put' | 'delete',
+  method: 'get' | 'post' | 'put' | 'patch' | 'delete' ,
   endpoint: string,
   body?: any
 }
@@ -112,9 +112,37 @@ const GitHubAPIService = {
       method: 'get',
       endpoint
     })
-    if(res.status === 202) this.GetContributorsCommits(data)
+    if (res.status === 202) this.GetContributorsCommits(data)
     return res.data
   },
+
+  async CloseAnIssue({ owner, project, issue }: { owner: string, project: string, issue: string }) {
+    const endpoint = `/repos/${owner}/${project}/issues/${issue}`
+
+    const res = await this.GithubConsumer({
+      method: 'patch',
+      endpoint,
+      body: {
+        state: 'closed',
+        state_reason: 'completed'
+      }
+    })
+    return res.data
+  },
+
+  async ReOpenAnIssue({ owner, project, issue }: { owner: string, project: string, issue: string }) {
+    const endpoint = `/repos/${owner}/${project}/issues/${issue}`
+
+    const res = await this.GithubConsumer({
+      method: 'patch',
+      endpoint,
+      body: {
+        state: 'open',
+        state_reason: 'reopened'
+      }
+    })
+    return res.data
+  }
 }
 
 export default GitHubAPIService

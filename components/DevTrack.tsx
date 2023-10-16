@@ -8,6 +8,7 @@ import { useRouter } from "next/navigation";
 import ChipIssueLabels from '@/components/ChipIssueLabels'
 import PriorityDots from "./PriorityDots";
 import { GitBranch, GithubIcon } from "lucide-react";
+import GitHubAPIService from "@/service/GitHubAPIService";
 
 interface DevTrackProps {
   boards?: IBoards[],
@@ -36,8 +37,26 @@ export default function DevTrack({ boards }: DevTrackProps) {
     setLayout(newLayout)
   }, [boards])
 
-  const changeBoardStatus = async (layout: GridLayout.Layout[], { i: id, x: oldStatus }: GridLayout.Layout) => {
-    const realItem = layout.find((item: any) => item.i === id)
+  const changeIssueOnGithub = async (boardInfoItem: IBoards | undefined, status: 'reopen' | 'closed') => {
+    if (!boardInfoItem) return;
+    if (!boardInfoItem.issue_id) return;
+
+    const gitHubIssue = {
+      owner: boardInfoItem.project.owner_name || '',
+      project: boardInfoItem.project.name || '',
+      issue: boardInfoItem.issue_number || ''
+    }
+
+    if (status === 'reopen') {
+      await GitHubAPIService.ReOpenAnIssue(gitHubIssue);
+      return;
+    }
+
+    await GitHubAPIService.CloseAnIssue(gitHubIssue);
+  }
+
+  const changeBoardStatus = async (onGridLayout: GridLayout.Layout[], { i: id, x: oldStatus }: GridLayout.Layout) => {
+    const realItem = onGridLayout.find((item: any) => item.i === id)
 
     if (!realItem) {
       console.error('Error while searching the id of issue');
@@ -50,7 +69,16 @@ export default function DevTrack({ boards }: DevTrackProps) {
       id: realItem.i,
       status: realItem.x
     }
-    await BoardService.updateBoard(board)
+    const boardInfoItem: IBoards | undefined = layout.find((boardInfo: IBoards) => boardInfo.id === board.id);
+
+    if (oldStatus === 5) {
+      changeIssueOnGithub(boardInfoItem, 'reopen');
+    }
+
+    if (board.status === 5) {
+      changeIssueOnGithub(boardInfoItem, 'closed');
+    }
+    await BoardService.updateBoard(board);
   }
 
   return (

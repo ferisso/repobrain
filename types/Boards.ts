@@ -11,6 +11,7 @@ export interface IBoards {
     status?: number;
     points?: number;
     issue_id?: string;
+    issue_number?: string;
     issue_url?: string;
     label?: TLabels | string;
     project_id?: string;

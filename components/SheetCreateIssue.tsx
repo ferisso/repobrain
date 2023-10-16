@@ -70,7 +70,8 @@ export default function SheetCreateIssue({ projectInfo, refetch, children }: She
       points: !!points ? Number(points) : 0,
       label,
       issue_id: githubRes && String(githubRes.id),
-      issue_url: githubRes && githubRes.url
+      issue_number: githubRes && String(githubRes.number),
+      issue_url: githubRes && githubRes.html_url
     }
 
     await BoardService.createBoard(newIssue)
