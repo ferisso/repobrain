@@ -20,6 +20,7 @@ import {
   PointElement,
 } from 'chart.js';
 import { Bar, Line } from 'react-chartjs-2';
+import AvatarCard from "@/components/AvatarCard";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -144,7 +145,7 @@ export default function Reports() {
 
     let data = {
       labels: lastWeeks,
-      datasets: lastYearCommits.map((x: any, i:number) => {
+      datasets: lastYearCommits?.map((x: any, i:number) => {
         return{
           label: x?.author?.login,
           backgroundColor: chartColors[i],
@@ -161,8 +162,7 @@ export default function Reports() {
           position: 'top' as const,
         },
         title: {
-          display: true,
-          text: 'Chart.js Line Chart',
+          display: false,
         },
       },
     };
@@ -185,13 +185,34 @@ export default function Reports() {
         />
       </div>
       <div className="mt-4 w-full h-full min-h-[400px] flex justify-center items-center flex-col gap-3 border border-dashed text-center p-4 rounded-md">
-        {selectedProject ? (
+        {lastYearCommits.length && selectedProject ? (
           <>
-            {lastYearCommits.length && <Line options={buildContributorsChart().options} data={buildContributorsChart().data} />}
-            <p>
-              Excluding merges, {contributors.length} authors have pushed {commits.length} commits to main. On the main branch, we have {files} bytes in files, and there
-              have been {additions} additions and {deletions} deletions.
-            </p>
+            <div className="flex justify-between w-full gap-8">
+              <div className="bg-zinc-100 py-2 px-3 rounded-md w-2/3">
+                <span className="font-semibold text-zinc-800">Last year commits</span>
+                <Line options={buildContributorsChart().options} data={buildContributorsChart().data} />
+              </div>
+              <div className="flex flex-col w-1/3 gap-8">
+                <div className="flex flex-col bg-zinc-100 rounded-md py-2 px-3">
+                  <span className="font-semibold text-zinc-800">Total of contributions</span>
+                  <div className="flex gap-3 items-center font-light text-md transition-colors py-4 px-5">
+                    {contributors.map((c: any) => 
+                    <div className="flex flex-col" key={c?.id}>
+                      <span className="text-teal-500 font-semibold mb-2">{c.contributions}</span>
+                      <AvatarCard user={{name: c.login, image:c. avatar_url, id: c.id, email: c.email}} />
+                    </div>
+                    )}
+                  </div>
+                </div>
+                
+                <p className="text-zinc-700">
+                  Excluding merges, <b>{contributors.length}</b> authors have pushed <b>{commits.length}</b> commits to main. On the main branch, we have <b>{files}</b> bytes in files, and there
+                  have been <b className="text-teal-500">{additions}</b> additions and <b className="text-red-500">{deletions}</b> deletions.
+                </p>
+              </div>
+              
+            </div>
+            
           </>
         ) : (
           <>
