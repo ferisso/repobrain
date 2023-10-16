@@ -6,6 +6,7 @@ import PriorityDots from "@/components/PriorityDots"
 import { IBoards } from "@/types/Boards"
 import { useState } from "react";
 import BoardService from "@/service/BoardsService";
+import IssueLabelSelect from "./IssueLabelSelect";
 
 
 let EditorJs: any;
@@ -26,7 +27,7 @@ export default function EditIssue({ board }: { board: IBoards }) {
 
   const debounce = (func: Function, delay: number) => {
     let timeoutId: NodeJS.Timeout;
-  
+
     return (...args: any[]) => {
       clearTimeout(timeoutId);
       timeoutId = setTimeout(() => {
@@ -47,51 +48,51 @@ export default function EditIssue({ board }: { board: IBoards }) {
     <>
       <div className="flex flex-col gap-2 w-full">
         <div className="flex gap-2 items-center">
-          <input 
-            className="text-xl text-zinc-900/80 font-semibold outline-none w-full" 
-            defaultValue={board?.title} 
-            onChange={(e) => saveIssue({ key: 'title', value: e.target.value })} 
+          <input
+            className="text-xl text-zinc-900/80 font-semibold outline-none w-full"
+            defaultValue={board?.title}
+            onChange={(e) => saveIssue({ key: 'title', value: e.target.value })}
           />
           {
             (board.onBoardStatus || board.onBoardStatus == 0) && (
-              <div 
-                className={`rounded-full border max-w-[100px] w-full px-2 py-1 flex justify-center text-xs ${statusOptions[board.onBoardStatus].classOption}`}
+              <div
+                className={
+                  `rounded-full border max-w-[100px] w-full px-2 py-1 
+                  flex justify-center text-xs 
+                  ${statusOptions[board.onBoardStatus].classOption}`
+                }
               >
                 {statusOptions[board.onBoardStatus].text}
               </div>
             )
           }
-          {
-            board.label && (
-              <ChipIssueLabels label={board.label} className="rounded-full py-1 px-2 text-xs" />
-            )
-          }
+          <IssueLabelSelect selectIssue={(e) => saveIssue({ key: 'label', value: e })} className="max-w-[150px]" value={board.label} />
           <PriorityDots priority={board.priority} />
         </div>
         <div className="flex gap-2 items-center">
-          <TeamMemberSelect 
-            placeholder="Reporter" 
-            teamId={board?.project?.team_id} 
-            selectMember={(e) => saveIssue({ key: 'reporter', value: e })} 
+          <TeamMemberSelect
+            placeholder="Reporter"
+            teamId={board?.project?.team_id}
+            selectMember={(e) => saveIssue({ key: 'reporter', value: e })}
             selectedMember={board?.reporter}
           />
           <div className="flex justify-center items-center w-10 text-zinc-600">
             <ArrowRight size={24} />
           </div>
-          <TeamMemberSelect 
-            placeholder="Assignee" 
-            teamId={board?.project?.team_id} 
-            selectMember={(e) => saveIssue({ key: 'assignee', value: e })} 
-            selectedMember={board?.assignee} 
+          <TeamMemberSelect
+            placeholder="Assignee"
+            teamId={board?.project?.team_id}
+            selectMember={(e) => saveIssue({ key: 'assignee', value: e })}
+            selectedMember={board?.assignee}
           />
         </div>
       </div>
       <div className="flex flex-col gap-2 border rounded-md p-2 mt-4 w-full min-h-[400px]">
         {
-          EditorJs && 
-          <EditorJs 
-            data={board.description && JSON.parse(board.description)} 
-            setData={(e: string) => saveIssue({ key: 'description', value: e })} 
+          EditorJs &&
+          <EditorJs
+            data={board.description && JSON.parse(board.description)}
+            setData={(e: string) => saveIssue({ key: 'description', value: e })}
           />
         }
       </div>

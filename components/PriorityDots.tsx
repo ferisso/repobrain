@@ -38,7 +38,7 @@ export default function PriorityDots({ priority }: { priority?: number }) {
       <TooltipProvider>
         <Tooltip>
           <TooltipTrigger aria-label="Priority dots">
-            <div className="flex gap-1">
+            <div className="flex gap-0.5">
               {createPriority().map(item => (<div key={`priority-${item}`} className={`h-1.5 w-1.5 ${dotColor()} rounded-full`} />))}
             </div>
           </TooltipTrigger>

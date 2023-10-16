@@ -7,14 +7,16 @@ interface IssueLabelSelectProps {
   required?: boolean;
   disabled?: boolean;
   placeholder?: string;
+  className?: string;
+  value?: string;
   selectIssue: (label: string) => void
 }
 
-export default function IssueLabelSelect({ required, disabled, placeholder = "Select a label", selectIssue }: IssueLabelSelectProps) {
+export default function IssueLabelSelect({ required, disabled, placeholder = "Select a label", className, value, selectIssue }: IssueLabelSelectProps) {
   const labels: TLabels[] = ['documentation', 'enhancement', 'bug']
   return (
-    <Select onValueChange={selectIssue} required={required} disabled={disabled}>
-      <SelectTrigger>
+    <Select onValueChange={selectIssue} required={required} disabled={disabled} defaultValue={value}>
+      <SelectTrigger className={className}>
         <SelectValue placeholder={placeholder} />
       </SelectTrigger>
       <SelectContent>
