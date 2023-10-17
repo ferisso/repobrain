@@ -229,7 +229,12 @@ export default function Reports() {
                 <div className="flex flex-col gap-3">
                   {lastModifiedFile.files?.map((f: any) =>
                     <div className="flex justify-between text-sm text-zinc-500" key={f.sha}>
-                      <a className="flex" href={f.raw_url} target="_blank"><File size={20} />{f.filename}</a>
+                      <a className="flex gap-1 items-center" href={f.raw_url} title={f.filename} target="_blank">
+                        <File size={18} />
+                        <span className="underline text-sm">
+                          {f.filename.length > 35 ? f.filename.substring(0, 30) + '...' : f.filename}
+                        </span>
+                      </a>
                       <div className="flex"><b className="text-teal-500">+ {f.additions}</b><b className="text-red-500 ml-3">- {f.deletions}</b></div>
                     </div>
                   )}
