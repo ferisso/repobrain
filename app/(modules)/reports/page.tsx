@@ -28,7 +28,8 @@ ChartJS.register(
   LineElement,
   Title,
   Tooltip,
-  Legend
+  Legend,
+  BarElement,
 );
 
 export default function Reports() {
@@ -66,6 +67,7 @@ export default function Reports() {
   const [deletions, setDeletions] = useState<any>(0)
   const [lastYearCommits, setLastYearCommits] = useState<any>([])
   const [lastModifiedFile, setLastModifiedFile] = useState<any>(null)
+  const [issues, setIssues] = useState<any>([])
 
   const getReports = async () => {
     setContributors([]);
@@ -76,6 +78,7 @@ export default function Reports() {
     setDeletions(0)
     setLastYearCommits([])
     setLastModifiedFile(null)
+    setIssues([])
 
 
     const contributorsApi = await GitHubAPIService.GetRepoContributions(
@@ -97,17 +100,12 @@ export default function Reports() {
     })
     setFiles(sum)
     
-    // console.log('files',files);
-    // console.log('commits', commits);
-    // console.log('contributors', contributors)
-
     let compare = await GitHubAPIService.GetRepoComparisson(
       selectedProject,
       commitsApi[commitsApi.length-1]?.sha,
       commitsApi[0]?.sha
     )
     setComparisson(compare)
-    console.log('comparisson', comparisson)
 
     compare?.files?.forEach((x: any) => {
       setAdditions((curr: any) => curr + x.additions);
@@ -120,10 +118,69 @@ export default function Reports() {
 
     let lastModifiedFileApi = await GitHubAPIService.GetLastModifiedFile(selectedProject, commitsApi[0]?.sha);
     setLastModifiedFile(lastModifiedFileApi)
-    console.log(lastModifiedFileApi)
+
+    let issuesApi = await GitHubAPIService.GetRepoIssues(selectedProject);
+    setIssues(issuesApi)
+    buildIssuesChart();
   };
 
+  const buildIssuesChart = () => {
+    const dataMap: any = new Map();
+
+    issues.forEach((item: any) => {
+      const assignee = item?.assignee?.login ? item?.assignee?.login : 'Unassigned';
+      const state = item.state;
+
+      if (!dataMap.has(assignee)) {
+        dataMap.set(assignee, { open: 0, closed: 0 });
+      }
+
+      dataMap.get(assignee)[state]++;
+    });
+
+    const labels = [...dataMap.keys()];
+    const openData = labels.map(assignee => dataMap.get(assignee).open);
+    const closedData = labels.map(assignee => dataMap.get(assignee).closed);
+
+    let data = {
+      labels: labels,
+      datasets: [
+        {
+          label: 'Open',
+          data: openData,
+          backgroundColor: 'rgba(75, 192, 192)',
+          borderColor: 'rgba(75, 192, 192)'
+        },
+        {
+          label: 'Closed',
+          data: closedData,
+          backgroundColor: 'rgba(153, 102, 255)',
+          borderColor: 'rgba(153, 102, 255)'
+        },
+      ],
+    }
+
+    console.log(data)
+
+    let options = {
+      indexAxis: 'y' as const,
+      responsive: true,
+      plugins: {
+        legend: {
+          position: 'right' as const,
+        },
+        title: {
+          display: false,
+        },
+      }
+    };
+
+    return {data, options}
+  }
+
   const buildContributorsChart = () => {
+
+    if(lastYearCommits.length === 0) return {options: undefined, data: {labels: [], datasets: []}}
 
     const today = new Date();
     let lastWeeks = [];
@@ -190,7 +247,7 @@ export default function Reports() {
           route={"reports"}
         />
       </div>
-      <div className="mt-4 w-full h-full min-h-[400px] flex justify-center items-center flex-col gap-3 border border-dashed text-center p-4 rounded-md">
+      <div className="mt-4 w-full h-full min-h-[400px] flex justify-center items-center flex-col gap-8 border border-dashed text-center p-4 rounded-md">
         {lastYearCommits.length && selectedProject && lastModifiedFile ? (
           <>
             <div className="flex justify-between w-full gap-8">
@@ -217,20 +274,26 @@ export default function Reports() {
               </div>
             </div>
             <div className="flex justify-between w-full gap-8">
-              <div className="flex flex-col bg-zinc-100 py-2 px-3 rounded-md w-1/3">
+              <div className="flex flex-col justify-between bg-zinc-100 py-2 px-3 rounded-md w-1/2">
+                <div className="flex flex-col">
                 <span className="font-semibold text-zinc-800 mb-4">Last modified files</span>
-                <div className="flex flex-col gap-3">
-                  {lastModifiedFile.files?.map((f: any) => 
-                    <div className="flex justify-between text-sm text-zinc-500" key={f.sha}>
-                      <a className="flex" href={f.raw_url} target="_blank"><File size={20} />{f.filename}</a>
-                      <div className="flex"><b className="text-teal-500">+ {f.additions}</b><b className="text-red-500 ml-3">- {f.deletions}</b></div>
-                    </div>
-                  )}
+                  <div className="flex flex-col gap-3">
+                    {lastModifiedFile?.files?.map((f: any) => 
+                      <div className="flex justify-between text-sm text-zinc-500" key={f.sha}>
+                        <a className="flex" href={f.raw_url} target="_blank"><File size={20} className="mr-3"/>{f.filename}</a>
+                        <div className="flex"><b className="text-teal-500">+ {f.additions}</b><b className="text-red-500 ml-3">- {f.deletions}</b></div>
+                      </div>
+                    )}
+                  </div>
                 </div>
                 <div className="flex justify-between mt-4">
                   <span className="text-zinc-500">Author</span>
-                  <AvatarCard user={{name: lastModifiedFile.author.login, image:lastModifiedFile.author. avatar_url, id: lastModifiedFile.author.id, email: lastModifiedFile.author.email}} />
+                  <AvatarCard user={{name: lastModifiedFile?.author?.login, image:lastModifiedFile?.author?.avatar_url, id: lastModifiedFile?.author?.id, email: lastModifiedFile?.author?.email}} />
                 </div>
+              </div>
+              <div className="flex flex-col bg-zinc-100 py-2 px-3 rounded-md w-1/2">
+                <span className="font-semibold text-zinc-800 mb-4">Issues per user</span>
+                <Bar options={buildIssuesChart().options} data={buildIssuesChart().data} />
               </div>
             </div>
           </>

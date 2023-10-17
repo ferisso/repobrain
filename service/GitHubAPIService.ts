@@ -127,6 +127,17 @@ const GitHubAPIService = {
     return res.data
   },
 
+  async GetRepoIssues(data: any) {
+    const endpoint = `/repos/${data?.owner_name}/${data?.name}/issues?state=all`;
+
+    const res = await this.GithubConsumer({
+      method: 'get',
+      endpoint
+    })
+    if (res.status === 202) this.GetRepoIssues(data)
+    return res.data
+  },
+
   async CloseAnIssue({ owner, project, issue }: { owner: string, project: string, issue: string }) {
     const endpoint = `/repos/${owner}/${project}/issues/${issue}`
 
