@@ -1,12 +1,10 @@
-import ChipIssueLabels from "@/components/ChipIssueLabels"
 import TeamMemberSelect from "@/components/TeamMemberSelect"
-import { ArrowRight } from "lucide-react"
+import { ArrowRight, GithubIcon } from "lucide-react"
 import dynamic from 'next/dynamic';
-import PriorityDots from "@/components/PriorityDots"
 import { IBoards } from "@/types/Boards"
-import { useState } from "react";
 import BoardService from "@/service/BoardsService";
 import IssueLabelSelect from "./IssueLabelSelect";
+import { useSession } from "next-auth/react";
 
 
 let EditorJs: any;
@@ -15,7 +13,7 @@ if (typeof window !== "undefined") {
 }
 
 export default function EditIssue({ board }: { board: IBoards }) {
-  const [title, setTitle] = useState('')
+  const { data } = useSession()
   const statusOptions = {
     0: { text: 'Blocked', classOption: 'border-red-500 text-red-500' },
     1: { text: 'To do', classOption: 'border-orange-500 text-orange-500' },
@@ -49,25 +47,11 @@ export default function EditIssue({ board }: { board: IBoards }) {
       <div className="flex flex-col gap-2 w-full">
         <div className="flex gap-2 items-center">
           <input
-            className="text-xl text-zinc-900/80 font-semibold outline-none w-full"
+            className="text-xl text-zinc-900/80 font-semibold outline-none w-full border-b hover:border-zinc-300 focus:border-zinc-400 transition-colors p-1"
             defaultValue={board?.title}
             onChange={(e) => saveIssue({ key: 'title', value: e.target.value })}
           />
-          {
-            (board.onBoardStatus || board.onBoardStatus == 0) && (
-              <div
-                className={
-                  `rounded-full border max-w-[100px] w-full px-2 py-1 
-                  flex justify-center text-xs 
-                  ${statusOptions[board.onBoardStatus].classOption}`
-                }
-              >
-                {statusOptions[board.onBoardStatus].text}
-              </div>
-            )
-          }
           <IssueLabelSelect selectIssue={(e) => saveIssue({ key: 'label', value: e })} className="max-w-[150px]" value={board.label} />
-          <PriorityDots priority={board.priority} />
         </div>
         <div className="flex gap-2 items-center">
           <TeamMemberSelect
@@ -85,6 +69,44 @@ export default function EditIssue({ board }: { board: IBoards }) {
             selectMember={(e) => saveIssue({ key: 'assignee', value: e })}
             selectedMember={board?.assignee}
           />
+          {
+            (board.onBoardStatus || board.onBoardStatus == 0) && (
+              <div
+                className={
+                  `rounded-full border px-2 py-1 
+                  flex justify-center text-xs text-center
+                  ${statusOptions[board.onBoardStatus].classOption}`
+                }
+              >
+                {statusOptions[board.onBoardStatus].text}
+              </div>
+            )
+          }
+        </div>
+        <div className="flex gap-2 items-center">
+          <label className="text-xs text-zinc-600">Priority</label>
+          <input
+            className="outline-none border transition-colors p-1 rounded-md w-12 text-sm"
+            defaultValue={board?.priority}
+            min={0}
+            max={5}
+            type="number"
+            onChange={(e) => saveIssue({ key: 'priority', value: Number(e.target.value) })}
+          />
+          <label className="text-xs text-zinc-600">Points</label>
+          <input
+            className="outline-none border transition-colors p-1 rounded-md w-12 text-sm"
+            defaultValue={board?.points}
+            type="number"
+            onChange={(e) => saveIssue({ key: 'points', value: Number(e.target.value) })}
+          />
+          {
+            board?.issue_id ? 
+            <a href={board?.issue_url} target="_blank" rel="noopener noreferrer" aria-label="Github issue">
+              <GithubIcon size={22} className="text-zinc-600 hover:text-zinc-800" />
+            </a>
+            : data?.user.access_token && <button className="text-sm rounded-md py-1 px-2 text-teal-500 hover:bg-teal-50">Create issue on github</button>
+          }
         </div>
       </div>
       <div className="flex flex-col gap-2 border rounded-md p-2 mt-4 w-full min-h-[400px]">

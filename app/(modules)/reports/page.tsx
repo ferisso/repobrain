@@ -101,7 +101,7 @@ export default function Reports() {
       sum += x?.size
     })
     setFiles(sum)
-    
+
     let compare = await GitHubAPIService.GetRepoComparisson(
       selectedProject,
       commitsApi[commitsApi.length - 1]?.sha,
@@ -177,12 +177,12 @@ export default function Reports() {
       }
     };
 
-    return {data, options}
+    return { data, options }
   }
 
   const buildContributorsChart = () => {
 
-    if(lastYearCommits.length === 0) return {options: undefined, data: {labels: [], datasets: []}}
+    if (lastYearCommits.length === 0) return { options: undefined, data: { labels: [], datasets: [] } }
 
     const today = new Date();
     let lastWeeks = [];
@@ -237,15 +237,15 @@ export default function Reports() {
 
   const downloadPDF = () => {
     const input: HTMLElement | null = document.getElementById('print');
-    if(input) 
-    html2canvas(input)
-      .then((canvas) => {
-        const imgData: string = canvas.toDataURL('image/png');
-        const pdf = new jsPDF({unit: 'px', orientation: "landscape", format: [552, 372]});
-        console.log(canvas.height, canvas.width)
-        pdf.addImage(imgData, 0, 0, 552, 372 );
-        pdf.save(`${selectedProject.name}-${new Date().toDateString().replaceAll(' ', '-')}.pdf`);
-      })
+    if (input)
+      html2canvas(input)
+        .then((canvas) => {
+          const imgData: string = canvas.toDataURL('image/png');
+          const pdf = new jsPDF({ unit: 'px', orientation: "landscape", format: [552, 372] });
+          console.log(canvas.height, canvas.width)
+          pdf.addImage(imgData, 0, 0, 552, 372);
+          pdf.save(`${selectedProject.name}-${new Date().toDateString().replaceAll(' ', '-')}.pdf`);
+        })
   }
 
   return (
@@ -258,12 +258,14 @@ export default function Reports() {
           </p>
         </span>
         <div className="flex gap-8">
-          <button
-            className="flex items-center justify-center gap-1 text-teal-500 border border-teal-500 py-2 px-4 rounded-md text-xs hover:bg-teal-500/5"
-            onClick={() => downloadPDF()}>
-            <FilePdf size={18} />
-            Generate PDF
-          </button>
+          {
+            selectedProject && <button
+              className="flex items-center justify-center gap-1 text-teal-500 border border-teal-500 py-2 px-4 rounded-md text-xs hover:bg-teal-500/5"
+              onClick={() => downloadPDF()}>
+              <FilePdf size={18} />
+              Generate PDF
+            </button>
+          }
           <DropdownProjects
             selectedProject={setSelectedProject}
             route={"reports"}
@@ -306,9 +308,9 @@ export default function Reports() {
             <div className="flex justify-between w-full gap-8">
               <div className="flex flex-col justify-between border py-2 px-3 rounded-md w-1/2">
                 <div className="flex flex-col">
-                <span className="font-semibold text-zinc-800 mb-4">Last modified files</span>
+                  <span className="font-semibold text-zinc-800 mb-4">Last modified files</span>
                   <div className="flex flex-col gap-3">
-                    {lastModifiedFile?.files?.map((f: any) => 
+                    {lastModifiedFile?.files?.map((f: any) =>
                       <div className="flex justify-between text-sm text-zinc-500" key={f.sha}>
                         <a title={f.filename} className="flex gap-2 items-center" href={f.raw_url} target="_blank"><File size={20} />
                           <span className="underline hover:text-zinc-700">
@@ -322,7 +324,7 @@ export default function Reports() {
                 </div>
                 <div className="flex justify-between mt-4">
                   <span className="text-zinc-500">Author</span>
-                  <AvatarCard user={{name: lastModifiedFile?.author?.login, image:lastModifiedFile?.author?.avatar_url, id: lastModifiedFile?.author?.id, email: lastModifiedFile?.author?.email}} />
+                  <AvatarCard user={{ name: lastModifiedFile?.author?.login, image: lastModifiedFile?.author?.avatar_url, id: lastModifiedFile?.author?.id, email: lastModifiedFile?.author?.email }} />
                 </div>
               </div>
               <div className="flex flex-col border py-2 px-3 rounded-md w-1/2">

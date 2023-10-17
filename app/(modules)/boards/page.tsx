@@ -18,6 +18,7 @@ export default function Boards() {
   const router = useRouter()
   const params = useSearchParams()
   const [selectedProject, setSelectedProject] = useState<any>(null)
+  const [search, setSearch] = useState('')
   const { data: boards, isLoading, refetch, isFetching } = useQuery("boards", async () => {
     if (params.has('project_id')) {
       return await BoardService.getBoards(params.toString())
@@ -47,7 +48,7 @@ export default function Boards() {
         selectedProject && (
           <div className="flex justify-between items-center mt-2">
             <span className="flex gap-2 items-center">
-              <input type="text" className="input-themed h-9 w-48 rounded-md ml-[2px]" placeholder="Search" />
+              <input type="text" className="input-themed h-9 w-28 rounded-md ml-[2px] hover:w-48 focus:w-48 transition-all duration-300" placeholder="Search" onChange={(e) => setSearch(e.target.value)} />
               <AvatarList users={selectedProject?.team?.members} isSelectable />
             </span>
             <SheetCreateIssue projectInfo={selectedProject} refetch={refetch}>
@@ -63,7 +64,7 @@ export default function Boards() {
         selectedProject ? (
           <div className="mt-4 w-full h-full min-h-[400px] flex flex-col gap-3 border text-center p-4 rounded-md overflow-x-auto mb-8">
             {
-              isLoading ? <MainLoader fullscreen={false} /> : <DevTrack boards={boards} />
+              isLoading ? <MainLoader fullscreen={false} /> : <DevTrack boards={!!search ? boards?.filter(item => item.title?.toLocaleLowerCase().includes(search.toLocaleLowerCase())) : boards} />
             }
           </div>
         )

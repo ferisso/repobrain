@@ -18,6 +18,7 @@ import { IBoards } from "@/types/Boards";
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
 import ConverteToMd from "@/tools/ConverteToMd";
+import { SpinnerGap } from "@phosphor-icons/react";
 
 let EditorJs: any;
 if (typeof window !== "undefined") {
@@ -40,6 +41,7 @@ export default function SheetCreateIssue({ projectInfo, refetch, children }: She
   const [points, setPoints] = useState<string>()
   const [label, setLabel] = useState<string>()
   const [createIssue, setCreateIssue] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState(false)
   const session = useSession()
 
   const openEvent = (event: boolean) => {
@@ -49,7 +51,7 @@ export default function SheetCreateIssue({ projectInfo, refetch, children }: She
 
   const submitForm = async (event: FormEvent) => {
     event.preventDefault()
-
+    setIsLoading(true)
     let githubRes: any;
 
     if (createIssue) {
@@ -78,6 +80,7 @@ export default function SheetCreateIssue({ projectInfo, refetch, children }: She
     await BoardService.createBoard(newIssue)
       .then(() => refetch && refetch())
       .then(() => setIsOpen(false))
+      .then(() => setIsLoading(false))
   }
 
   const mountIssueGithub = () => {
@@ -135,8 +138,10 @@ export default function SheetCreateIssue({ projectInfo, refetch, children }: She
               </div>
             )
           }
-          <button className="flex w-full py-3 justify-center items-center bg-teal-500 hover:bg-teal-600 transition-colors text-white rounded-md text-sm" type="submit">
-            Create issue
+          <button className="flex w-full py-3 justify-center items-center bg-teal-500 hover:bg-teal-600 transition-colors text-white rounded-md text-sm" type="submit" disabled={isLoading}>
+            {
+              isLoading ? <SpinnerGap className="text-white animate-spin" size={18} /> : "Create issue"
+            }
           </button>
         </form>
       </SheetContent>
