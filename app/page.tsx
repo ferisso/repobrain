@@ -16,13 +16,13 @@ export default function Home() {
           </Link>
         </div>
       </div>
-      <div className="flex flex-col w-screen h-screen items-center pt-[12vh] container">
-        <h1 className="text-center font-semibold text-[5rem] leading-none text-zinc-800">
+      <div className="flex flex-col w-screen h-screen items-center pt-[12vh] container text-center">
+        <h1 className="text-center font-semibold sm:text-[5rem] text-2xl leading-none text-zinc-800">
           Significantly <br />
           Improve Projects
         </h1>
         <small className="text-zinc-500 mt-8 text-base">Manage your projects with RepoBrain</small>
-        <div className="flex gap-4 mt-9">
+        <div className="flex gap-4 mt-9 sm:flex-row flex-col">
           <a className="bg-zinc-800 rounded-xl w-52 h-12 flex items-center justify-center  gap-2 text-white font-medium hover:bg-zinc-900" href="https://github.com/ferisso/repobrain">
             <GithubIcon size={20} />
             See on Github
