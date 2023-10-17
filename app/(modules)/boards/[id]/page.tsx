@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation"
 import { Trash2 } from "react-feather"
 import dynamic from 'next/dynamic';
 import EditIssue from "@/components/EditIssue"
+import ConverteToMd from "@/tools/ConverteToMd"
 
 
 let EditorJs: any;
@@ -23,6 +24,8 @@ export default async function Board({ params }: { params: { id: string } }) {
     route.back()
   }
 
+
+
   return (
     <>
       <div className="flex flex-col">
@@ -30,11 +33,9 @@ export default async function Board({ params }: { params: { id: string } }) {
           <button className="py-2 text-zinc-400 rounded-md hover:text-zinc-500 bg-" onClick={() => route.back()}>
             <ArrowLeft size={24} />
           </button>
-          <span className="flex gap-2">
             <button className="p-2 text-red-400 rounded-md hover:bg-red-100/40 hover:text-red-500 text-xs flex gap-1 items-center" onClick={deleteBoard}>
               <Trash2 size={16} /> Delete
             </button>
-          </span>
         </div>
         <EditIssue board={board} />
       </div>

@@ -17,6 +17,7 @@ import GitHubAPIService from "@/service/GitHubAPIService";
 import { IBoards } from "@/types/Boards";
 import { toast } from "react-toastify";
 import { useSession } from "next-auth/react";
+import ConverteToMd from "@/tools/ConverteToMd";
 
 let EditorJs: any;
 if (typeof window !== "undefined") {
@@ -84,7 +85,7 @@ export default function SheetCreateIssue({ projectInfo, refetch, children }: She
       owner: projectInfo?.owner_name,
       repo: projectInfo?.name,
       title,
-      body: description,
+      body: ConverteToMd(description),
       labels: label ? [label.toLowerCase()] : undefined
     }
   }
