@@ -96,14 +96,14 @@ export default function Reports() {
       sum += x?.size
     })
     setFiles(sum)
-    
+
     // console.log('files',files);
     // console.log('commits', commits);
     // console.log('contributors', contributors)
 
     let compare = await GitHubAPIService.GetRepoComparisson(
       selectedProject,
-      commitsApi[commitsApi.length-1]?.sha,
+      commitsApi[commitsApi.length - 1]?.sha,
       commitsApi[0]?.sha
     )
     setComparisson(compare)
@@ -130,11 +130,11 @@ export default function Reports() {
 
     for (let i = 0; i < lastYearCommits[0]?.weeks.length; i++) {
       const date = new Date(today);
-      date.setDate(date.getDate() - i * 7); 
+      date.setDate(date.getDate() - i * 7);
 
-      const day = date.getDate(); 
-      const month = date.getMonth() + 1; 
-      const year = date.getFullYear(); 
+      const day = date.getDate();
+      const month = date.getMonth() + 1;
+      const year = date.getFullYear();
 
       lastWeeks.push(`${year}-${month}-${day}`);
     }
@@ -151,12 +151,12 @@ export default function Reports() {
 
     let data = {
       labels: lastWeeks,
-      datasets: lastYearCommits?.map((x: any, i:number) => {
-        return{
+      datasets: lastYearCommits?.map((x: any, i: number) => {
+        return {
           label: x?.author?.login,
           backgroundColor: chartColors[i],
           borderColor: chartColors[i],
-          data: x?.weeks?.map((w: any) => {return w.c})
+          data: x?.weeks?.map((w: any) => { return w.c })
         }
       })
     }
@@ -172,8 +172,8 @@ export default function Reports() {
         },
       },
     };
-    
-    return {data, options}
+
+    return { data, options }
   }
 
   return (
@@ -190,37 +190,44 @@ export default function Reports() {
           route={"reports"}
         />
       </div>
-      <div className="mt-4 w-full h-full min-h-[400px] flex justify-center items-center flex-col gap-3 border border-dashed text-center p-4 rounded-md">
+      <div className="mt-4 w-full h-full min-h-[400px] flex justify-center items-center flex-col gap-3 border text-center p-4 rounded-md">
         {lastYearCommits.length && selectedProject && lastModifiedFile ? (
           <>
             <div className="flex justify-between w-full gap-8">
-              <div className="bg-zinc-100 py-2 px-3 rounded-md w-2/3">
+              <div className="border py-2 px-3 rounded-md w-2/3">
                 <span className="font-semibold text-zinc-800 mb-4">Last year commits</span>
                 <Line options={buildContributorsChart().options} data={buildContributorsChart().data} />
               </div>
               <div className="flex flex-col w-1/3 gap-8">
-                <div className="flex flex-col bg-zinc-100 rounded-md py-2 px-3">
+                <div className="flex flex-col border rounded-md py-2 px-3">
                   <span className="font-semibold text-zinc-800 mb-4">Total of contributions</span>
                   <div className="flex gap-3 items-center font-light text-md transition-colors py-4 px-5">
-                    {contributors.map((c: any) => 
-                    <div className="flex flex-col" key={c?.id}>
-                      <span className="text-teal-500 font-semibold mb-2">{c.contributions}</span>
-                      <AvatarCard user={{name: c.login, image:c. avatar_url, id: c.id, email: c.email}} />
-                    </div>
+                    {contributors.map((c: any) =>
+                      <div className="flex flex-col" key={c?.id}>
+                        <span className="text-teal-500 font-semibold mb-2">{c.contributions}</span>
+                        <AvatarCard user={{ name: c.login, image: c.avatar_url, id: c.id, email: c.email }} />
+                      </div>
                     )}
                   </div>
                 </div>
-                <p className="text-zinc-700">
-                  Excluding merges, <b>{contributors.length}</b> authors have pushed <b>{commits.length}</b> commits to main. On the main branch, we have <b>{files}</b> bytes in files, and there
-                  have been <b className="text-teal-500">{additions}</b> additions and <b className="text-red-500">{deletions}</b> deletions.
+                <p className="text-zinc-500 text-sm font-light">
+                  Excluding merges,
+                  <b className="font-semibold text-zinc-700 mx-1">{contributors.length}</b>
+                  authors have pushed
+                  <b className="font-semibold text-zinc-700 mx-1">{commits.length}
+                  </b> commits to main. On the main branch, we have
+                  <b className="font-semibold text-zinc-700 mx-1">{files}</b>
+                  bytes in files, and there
+                  have been <b className="text-teal-500 font-semibold mx-1">{additions}</b>
+                  additions and <b className="text-red-500 font-semibold">{deletions}</b> deletions.
                 </p>
               </div>
             </div>
             <div className="flex justify-between w-full gap-8">
-              <div className="flex flex-col bg-zinc-100 py-2 px-3 rounded-md w-1/3">
+              <div className="flex flex-col border py-2 px-3 rounded-md w-1/3">
                 <span className="font-semibold text-zinc-800 mb-4">Last modified files</span>
                 <div className="flex flex-col gap-3">
-                  {lastModifiedFile.files?.map((f: any) => 
+                  {lastModifiedFile.files?.map((f: any) =>
                     <div className="flex justify-between text-sm text-zinc-500" key={f.sha}>
                       <a className="flex" href={f.raw_url} target="_blank"><File size={20} />{f.filename}</a>
                       <div className="flex"><b className="text-teal-500">+ {f.additions}</b><b className="text-red-500 ml-3">- {f.deletions}</b></div>
@@ -229,7 +236,7 @@ export default function Reports() {
                 </div>
                 <div className="flex justify-between mt-4">
                   <span className="text-zinc-500">Author</span>
-                  <AvatarCard user={{name: lastModifiedFile.author.login, image:lastModifiedFile.author. avatar_url, id: lastModifiedFile.author.id, email: lastModifiedFile.author.email}} />
+                  <AvatarCard user={{ name: lastModifiedFile.author.login, image: lastModifiedFile.author.avatar_url, id: lastModifiedFile.author.id, email: lastModifiedFile.author.email }} />
                 </div>
               </div>
             </div>
