@@ -21,6 +21,8 @@ import {
 } from 'chart.js';
 import { Bar, Line } from 'react-chartjs-2';
 import AvatarCard from "@/components/AvatarCard";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -233,6 +235,19 @@ export default function Reports() {
     return { data, options }
   }
 
+  const downloadPDF = () => {
+    const input: HTMLElement | null = document.getElementById('print');
+    if(input) 
+    html2canvas(input)
+      .then((canvas) => {
+        const imgData: string = canvas.toDataURL('image/png');
+        const pdf = new jsPDF({unit: 'px', orientation: "landscape", format: [552, 372]});
+        console.log(canvas.height, canvas.width)
+        pdf.addImage(imgData, 0, 0, 552, 372 );
+        pdf.save(`${selectedProject.name}-${new Date().toDateString().replaceAll(' ', '-')}.pdf`);
+      })
+  }
+
   return (
     <>
       <div className="flex justify-between items-center">
@@ -242,10 +257,18 @@ export default function Reports() {
             Here you find your awesome reports
           </p>
         </span>
-        <DropdownProjects
-          selectedProject={setSelectedProject}
-          route={"reports"}
-        />
+        <div className="flex gap-8">
+          <button
+            className="flex items-center justify-center gap-1 text-teal-500 border border-teal-500 py-2 px-4 rounded-md text-xs hover:bg-teal-500/5"
+            onClick={() => downloadPDF()}>
+            <FilePdf size={18} />
+            Generate PDF
+          </button>
+          <DropdownProjects
+            selectedProject={setSelectedProject}
+            route={"reports"}
+          />
+        </div>
       </div>
       <div className="mt-4 w-full h-full min-h-[400px] flex justify-center items-center flex-col gap-8 border border-dashed text-center p-4 rounded-md" id="print">
         {lastYearCommits.length && selectedProject && lastModifiedFile ? (
@@ -278,11 +301,6 @@ export default function Reports() {
                   have been <b className="text-teal-500 font-semibold mx-1">{additions}</b>
                   additions and <b className="text-red-500 font-semibold">{deletions}</b> deletions.
                 </p>
-                <button
-                  className="flex items-center justify-center gap-1 text-teal-500 border border-teal-500 py-2 px-4 rounded-md text-xs hover:bg-teal-500/5">
-                  <FilePdf size={18} />
-                  Generate PDF
-                </button>
               </div>
             </div>
             <div className="flex justify-between w-full gap-8">
