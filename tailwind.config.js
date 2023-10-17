@@ -56,7 +56,8 @@ module.exports = {
         'space': ['Space Grotesk', 'sans-serif']
       },
       backgroundImage: {
-        'main': `url('/img/bg.png')`
+        'main': `url('/img/bg.webp')`,
+        'board': `url('/img/board.webp')`
       },
       borderRadius: {
         lg: "var(--radius)",
