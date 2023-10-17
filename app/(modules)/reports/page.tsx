@@ -46,19 +46,19 @@ export default function Reports() {
   } = useQuery(
     "boards",
     async () => {
-      if (params.has("project_id") || selectedProject) {
+      if (params.has("project_id") && selectedProject) {
         getReports();
       }
     },
     {
-      refetchOnMount: true,
+      refetchOnMount: false,
       refetchOnWindowFocus: false,
     }
   );
 
   useEffect(() => {
     refetch();
-  }, [params, refetch]);
+  }, [params, refetch, selectedProject]);
 
 
   const [contributors, setContributors] = useState<any[]>([])
