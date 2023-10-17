@@ -3,6 +3,7 @@ import { useSession } from "next-auth/react";
 import { redirect } from "next/navigation";
 import Image from "next/image";
 import { Kanban, User } from "@phosphor-icons/react";
+import Link from "next/link";
 
 export default function Home() {
 
@@ -20,11 +21,12 @@ export default function Home() {
             <User size={18} />
             Create an account
           </button>
-          <button
+          <Link
+            href={'/boards'}
             className="flex items-center justify-center gap-1 text-white border bg-teal-500 border-teal-500 py-2 px-4 rounded-md text-xs hover:bg-teal-500/80">
             <Kanban size={18} />
             Check my boards
-          </button>
+          </Link>
         </div>
       </div>
       <div className="flex relative">
