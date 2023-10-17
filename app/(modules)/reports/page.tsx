@@ -3,7 +3,7 @@
 import DropdownProjects from "@/components/DropdownProjects";
 import BoardService from "@/service/BoardsService";
 import GitHubAPIService from "@/service/GitHubAPIService";
-import { ChartLineDown, FolderDashed, Plus, File } from "@phosphor-icons/react";
+import { ChartLineDown, FolderDashed, Plus, File, FilePdf } from "@phosphor-icons/react";
 import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -247,7 +247,7 @@ export default function Reports() {
           route={"reports"}
         />
       </div>
-      <div className="mt-4 w-full h-full min-h-[400px] flex justify-center items-center flex-col gap-8 border border-dashed text-center p-4 rounded-md">
+      <div className="mt-4 w-full h-full min-h-[400px] flex justify-center items-center flex-col gap-8 border border-dashed text-center p-4 rounded-md" id="print">
         {lastYearCommits.length && selectedProject && lastModifiedFile ? (
           <>
             <div className="flex justify-between w-full gap-8">
@@ -278,10 +278,15 @@ export default function Reports() {
                   have been <b className="text-teal-500 font-semibold mx-1">{additions}</b>
                   additions and <b className="text-red-500 font-semibold">{deletions}</b> deletions.
                 </p>
+                <button
+                  className="flex items-center justify-center gap-1 text-teal-500 border border-teal-500 py-2 px-4 rounded-md text-xs hover:bg-teal-500/5">
+                  <FilePdf size={18} />
+                  Generate PDF
+                </button>
               </div>
             </div>
             <div className="flex justify-between w-full gap-8">
-              <div className="flex flex-col justify-between bg-zinc-100 py-2 px-3 rounded-md w-1/2">
+              <div className="flex flex-col justify-between border py-2 px-3 rounded-md w-1/2">
                 <div className="flex flex-col">
                 <span className="font-semibold text-zinc-800 mb-4">Last modified files</span>
                   <div className="flex flex-col gap-3">
@@ -298,7 +303,7 @@ export default function Reports() {
                   <AvatarCard user={{name: lastModifiedFile?.author?.login, image:lastModifiedFile?.author?.avatar_url, id: lastModifiedFile?.author?.id, email: lastModifiedFile?.author?.email}} />
                 </div>
               </div>
-              <div className="flex flex-col bg-zinc-100 py-2 px-3 rounded-md w-1/2">
+              <div className="flex flex-col border py-2 px-3 rounded-md w-1/2">
                 <span className="font-semibold text-zinc-800 mb-4">Issues per user</span>
                 <Bar options={buildIssuesChart().options} data={buildIssuesChart().data} />
               </div>
