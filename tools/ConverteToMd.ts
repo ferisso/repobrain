@@ -1,4 +1,5 @@
 const ConverteToMd = (editorJSON: any): string => {
+  if (!editorJSON) return "";
   editorJSON = JSON.parse(editorJSON);
   const markdownText: string = editorJSON.blocks
     .map((block: any) => {

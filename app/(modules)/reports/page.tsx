@@ -1,7 +1,6 @@
 /* eslint-disable react/no-unescaped-entities */
 "use client";
 import DropdownProjects from "@/components/DropdownProjects";
-import BoardService from "@/service/BoardsService";
 import GitHubAPIService from "@/service/GitHubAPIService";
 import { ChartLineDown, FolderDashed, Plus, File, FilePdf } from "@phosphor-icons/react";
 import { useSearchParams } from "next/navigation";
