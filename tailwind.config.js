@@ -6,6 +6,7 @@ module.exports = {
     './components/**/*.{ts,tsx}',
     './app/**/*.{ts,tsx}',
     './src/**/*.{ts,tsx}',
+    // './public/**/*.{png,tsx}',
 	],
   theme: {
     container: {
@@ -50,6 +51,12 @@ module.exports = {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+      },
+      fontFamily: {
+        'space': ['Space Grotesk', 'sans-serif']
+      },
+      backgroundImage: {
+        'main': `url('/img/bg.png')`
       },
       borderRadius: {
         lg: "var(--radius)",
