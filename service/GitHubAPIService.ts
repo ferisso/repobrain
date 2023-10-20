@@ -1,5 +1,7 @@
 import axios, { AxiosHeaders, AxiosRequestConfig } from "axios";
 import { getSession } from "next-auth/react"
+import BoardService from "./BoardsService";
+import ConverteToMd from "@/tools/ConverteToMd";
 
 interface IGithubIssue {
   owner?: string,
@@ -164,6 +166,28 @@ const GitHubAPIService = {
       }
     })
     return res.data
+  },
+
+  async CreateIssueBasedOnBoard(boardId?: string) {
+    if (!boardId) return;
+
+    const boardData = await BoardService.getBoardsById(boardId)
+    if (!boardData.length) {
+      console.error('Error while getting the board')
+      return;
+    }
+
+    const board = boardData[0]
+
+    const githubIssueObj = {
+      owner: board?.project.owner_name,
+      repo: board?.project.name,
+      title: board.title,
+      body: ConverteToMd(board.description),
+      labels: board.label ? [board.label.toLowerCase()] : undefined
+    }
+
+    return await this.CreateNewIssue(githubIssueObj);
   }
 }
 

@@ -10,14 +10,14 @@ export default function Home() {
     <main className={`bg-main bg-cover overflow-hidden`}>
       <div className="fixed top-0 h-10 w-full">
         <div className="container py-2 flex items-center justify-between">
-          <Logo width="60" className="-mt-1" />
-          <Link href="/login" className="rounded-md px-2 py-1 flex items-center justify-center border border-zinc-800 text-sm hover:bg-white/20">
+          <Logo width="64" className="-mt-1" />
+          <Link href="/login" className="rounded-lg px-3 py-1 flex items-center justify-center border-2 border-zinc-800 text-sm hover:bg-white/20">
             Sign in
           </Link>
         </div>
       </div>
       <div className="flex flex-col w-screen h-screen items-center pt-[12vh] container text-center">
-        <h1 className="text-center font-semibold sm:text-[5rem] text-2xl leading-none text-zinc-800">
+        <h1 className="text-center font-semibold sm:text-[5rem] text-4xl leading-none text-zinc-800">
           Significantly <br />
           Improve Projects
         </h1>
@@ -32,8 +32,8 @@ export default function Home() {
           </Link>
         </div>
         <div className="bg-board h-full w-full bg-cover mt-16 rounded-t-2xl border relative">
-          <Image className="absolute top-4 -left-20 w-72 rounded-lg border shadow-lg shadow-teal-500/30" width={7000} height={7000} src={'/img/report.png'} alt="" />
-          <Image className="absolute top-60 -right-20 w-64 rounded-lg border shadow-lg shadow-purple-500/40" width={7000} height={7000} src={'/img/report2.png'} alt="" />
+          <Image className="absolute top-4 -left-20 w-72 rounded-lg border shadow-lg shadow-teal-500/30 sm:block hidden" width={7000} height={7000} src={'/img/report.png'} alt="" />
+          <Image className="absolute top-60 -right-20 w-64 rounded-lg border shadow-lg shadow-purple-500/40 sm:block hidden" width={7000} height={7000} src={'/img/report2.png'} alt="" />
         </div>
       </div>
     </main>

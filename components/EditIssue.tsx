@@ -5,6 +5,9 @@ import { IBoards } from "@/types/Boards"
 import BoardService from "@/service/BoardsService";
 import IssueLabelSelect from "./IssueLabelSelect";
 import { useSession } from "next-auth/react";
+import GitHubAPIService from "@/service/GitHubAPIService";
+import { toast } from "react-toastify";
+import { useState } from "react";
 
 
 let EditorJs: any;
@@ -14,6 +17,7 @@ if (typeof window !== "undefined") {
 
 export default function EditIssue({ board }: { board: IBoards }) {
   const { data } = useSession()
+  const [createdIssue, setCreatedIssue] = useState<any>()
   const statusOptions = {
     0: { text: 'Blocked', classOption: 'border-red-500 text-red-500' },
     1: { text: 'To do', classOption: 'border-orange-500 text-orange-500' },
@@ -41,6 +45,16 @@ export default function EditIssue({ board }: { board: IBoards }) {
     }
     BoardService.updateBoard(newBoard)
   }, 500);
+
+  const createIssueOnGithub = async () => {
+    await GitHubAPIService.CreateIssueBasedOnBoard(board.id)
+      .then((res) => {
+        if (res.status == 200 || res.status == 201) {
+          toast.success('Issue created on Github!')
+          setCreatedIssue(res.data)
+        }
+      })
+  }
 
   return (
     <>
@@ -101,11 +115,18 @@ export default function EditIssue({ board }: { board: IBoards }) {
             onChange={(e) => saveIssue({ key: 'points', value: Number(e.target.value) })}
           />
           {
-            board?.issue_id ? 
-            <a href={board?.issue_url} target="_blank" rel="noopener noreferrer" aria-label="Github issue">
-              <GithubIcon size={22} className="text-zinc-600 hover:text-zinc-800" />
-            </a>
-            : data?.user.access_token && <button className="text-sm rounded-md py-1 px-2 text-teal-500 hover:bg-teal-50">Create issue on github</button>
+            board?.issue_id || createdIssue ?
+              <a href={board?.issue_url ? board.issue_url : createdIssue?.html_url} target="_blank" rel="noopener noreferrer" aria-label="Github issue">
+                <GithubIcon size={22} className="text-zinc-600 hover:text-zinc-800" />
+              </a>
+              : data?.user.access_token && (
+                <button
+                  className="text-sm rounded-md py-1 px-2 text-teal-500 hover:bg-teal-50"
+                  onClick={() => createIssueOnGithub()}
+                >
+                  Create issue on github
+                </button>
+              )
           }
         </div>
       </div>

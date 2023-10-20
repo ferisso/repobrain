@@ -3,7 +3,7 @@ import axios, { AxiosError } from "axios"
 import { getSession } from 'next-auth/react';
 import { toast } from "react-toastify";
 
-const apiUrl = "http://localhost:3001"
+const apiUrl = process.env.API_URL
 const APIService = {
   async request({ method, route, body }: IRequestApiService) {
     if (method === 'get') {
@@ -28,6 +28,7 @@ const APIService = {
   },
   handleError: function(error: any) {
     if (error.response && error.response?.data) {
+      console.log(error.response)
       toast.error(error.response?.data?.message)
     }
     return error
