@@ -3,7 +3,7 @@ import axios, { AxiosError } from "axios"
 import { getSession } from 'next-auth/react';
 import { toast } from "react-toastify";
 
-const apiUrl = process.env.API_URL
+const apiUrl = process.env.NEXT_PUBLIC_API_URL
 const APIService = {
   async request({ method, route, body }: IRequestApiService) {
     if (method === 'get') {

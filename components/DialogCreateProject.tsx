@@ -30,7 +30,6 @@ export default function DialogCreateProject({ children, refreash }: DialogCreate
 
   const getRepos = async () => {
     const accessToken = session.data?.user.access_token
-    console.log(session.data?.user)
     if (!accessToken) {
       setHasGithub(false)
       return
