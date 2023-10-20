@@ -32,7 +32,7 @@ export default function Settings() {
           }
         </span>
       </div>
-      <div className="mt-4 w-full h-full min-h-[400px] flex flex-col gap-3">
+      <div className="mt-4 w-full h-full min-h-[400px] flex flex-col gap-3 px-1">
         <div className="grid grid-cols-10">
           <div className="col-span-6 flex flex-col gap-2">
             <label className="text-xs text-zinc-600" htmlFor="">Name</label>
