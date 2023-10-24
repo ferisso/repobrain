@@ -161,7 +161,6 @@ export default function Reports() {
       ],
     }
 
-    console.log(data)
 
     let options = {
       indexAxis: 'y' as const,
@@ -209,7 +208,7 @@ export default function Reports() {
 
     let data = {
       labels: lastWeeks,
-      datasets: lastYearCommits?.map((x: any, i: number) => {
+      datasets: lastYearCommits && lastYearCommits?.map((x: any, i: number) => {
         return {
           label: x?.author?.login,
           backgroundColor: chartColors[i],

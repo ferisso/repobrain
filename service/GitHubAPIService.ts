@@ -114,7 +114,7 @@ const GitHubAPIService = {
       method: 'get',
       endpoint
     })
-    if (res.status === 202) this.GetContributorsCommits(data)
+    if (res.status === 202) await this.GetContributorsCommits(data)
     return res.data
   },
 

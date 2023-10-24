@@ -73,18 +73,18 @@ export default function Login() {
           <div className="w-full">
             <input
               type="text"
-              placeholder="Insira o seu e-mail"
+              placeholder="Insert your email address"
               className="w-full border box-border border-zinc-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none"
-              {...register("email", { required: 'Por favor insira o e-mail', pattern: { value: /^\S+@\S+$/i, message: 'O formato não é válido' } })}
+              {...register("email", { required: 'Please insert your email', pattern: { value: /^\S+@\S+$/i, message: 'Not a valid email format' } })}
             />
             {errors.email && <p className="font-light text-red-500 text-xs ml-2 mt-1">{errors.email.message}</p>}
           </div>
           <div className="w-full">
             <input
               type="password"
-              placeholder="Insira a sua senha"
+              placeholder="Insert your password"
               className="w-full border box-border border-zinc-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none"
-              {...register("password", { required: 'Por favor insira a sua senha' })}
+              {...register("password", { required: 'Please insert your password' })}
             />
             {errors.password && <p className="font-light text-red-500 text-xs ml-2 mt-1">{errors.password.message}</p>}
           </div>
@@ -94,11 +94,11 @@ export default function Login() {
             type="submit"
           >
             {
-              loadingCredentials ? <SpinnerGap className="animate-spin" size={20} /> : "Entrar"
+              loadingCredentials ? <SpinnerGap className="animate-spin" size={20} /> : "Sign in"
             }
           </button>
         </form>
-        <p className="text-zinc-400 text-xs">ou</p>
+        <p className="text-zinc-400 text-xs">or</p>
         <button
           className="w-full p-2 h-[42px] bg-zinc-800 hover:bg-zinc-700 transition-all text-white rounded-lg flex gap-2 justify-center items-center outlined-none text-sm"
           disabled={loadingGithub || loadingCredentials}
@@ -109,18 +109,18 @@ export default function Login() {
               ? <SpinnerGap size={20} className="animate-spin" />
               : <>
                 <GitHub size={20} />
-                Entrar com o Github
+                Sign in with Github
               </>
           }
         </button>
       </div>
       <p className="mt-4 text-xs text-zinc-500">
-        Não possui uma conta?
+        Doesn&apos;t have an account?
         <button
           className="text-teal-600 underline ml-1 hover:text-teal-700 transition-all cursor-pointer"
           onClick={() => router.push('/register')}
         >
-          Cadastre-se aqui
+          Sign up now
         </button>
       </p>
     </div>

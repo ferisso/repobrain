@@ -2,7 +2,6 @@ import APIService from "./APIService"
 
 interface IRegisterService {
   name: string,
-  lastName: string,
   email: string,
   password: string
 }

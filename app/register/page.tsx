@@ -29,8 +29,7 @@ export default function Register() {
   password.current = watch('password')
   const onSubmit: SubmitHandler<IRegisterForm> = data => {
     const registerInfo = {
-      name: data.name,
-      lastName: data.lastName,
+      name: `${data.name} ${data.lastName}`,
       email: data.email,
       password: data.password
     }
@@ -60,45 +59,45 @@ export default function Register() {
           <div className="w-full">
             <input
               type="text"
-              placeholder="Nome"
+              placeholder="First name"
               className="w-full border box-border border-zinc-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none"
-              {...register("name", { required: 'Campo necessário' })}
+              {...register("name", { required: 'This field is required' })}
             />
             {errors.name && <p className="font-light text-red-500 text-xs ml-2 mt-1">{errors.name.message}</p>}
           </div>
           <div className="w-full">
             <input
               type="text"
-              placeholder="Sobrenome"
+              placeholder="Last name"
               className="w-full border box-border border-zinc-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none"
-              {...register("lastName", { required: 'Campo necessário' })}
+              {...register("lastName", { required: 'This field is required' })}
             />
             {errors.lastName && <p className="font-light text-red-500 text-xs ml-2 mt-1">{errors.lastName.message}</p>}
           </div>
           <div className="w-full">
             <input
               type="text"
-              placeholder="Insira o seu email"
+              placeholder="Insert an email"
               className="w-full border box-border border-zinc-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none"
-              {...register("email", { required: 'Campo necessário', pattern: { value: /^\S+@\S+$/i, message: 'O formato não é válido' } })}
+              {...register("email", { required: 'This field is required', pattern: { value: /^\S+@\S+$/i, message: 'Not a valid email format' } })}
             />
             {errors.email && <p className="font-light text-red-500 text-xs ml-2 mt-1">{errors.email.message}</p>}
           </div>
           <div className="w-full">
             <input
               type="password"
-              placeholder="Insira a sua senha"
+              placeholder="Insert your password"
               className="w-full border box-border border-zinc-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none"
-              {...register("password", { required: 'Campo necessário' })}
+              {...register("password", { required: 'This field is required' })}
             />
             {errors.password && <p className="font-light text-red-500 text-xs ml-2 mt-1">{errors.password.message}</p>}
           </div>
           <div className="w-full">
             <input
               type="password"
-              placeholder="Confirme a sua senha"
+              placeholder="Confirm your password"
               className="w-full border box-border border-zinc-300 px-4 py-2 rounded-lg focus:ring-2 focus:ring-teal-500 outline-none"
-              {...register("passwordMatch", { required: 'Campo necessário', validate: { isEqual: (v) => v == password.current || 'As senhas não são iguais' } })}
+              {...register("passwordMatch", { required: 'This field is required', validate: { isEqual: (v) => v == password.current || `The passwords don't match` } })}
             />
             {errors.passwordMatch && <p className="font-light text-red-500 text-xs ml-2 mt-1">{errors.passwordMatch.message}</p>}
           </div>
@@ -106,25 +105,25 @@ export default function Register() {
             type="submit"
             className="w-full p-2 h-[42px] bg-teal-600 text-white rounded-lg hover:bg-teal-700 transition-all outlined-none text-sm"
           >
-            Cadastrar
+            Sign up
           </button>
         </form>
-        <p className="text-zinc-400 text-xs">ou</p>
+        <p className="text-zinc-400 text-xs">or</p>
         <button
           className="w-full p-2 h-[42px] bg-zinc-800 hover:bg-zinc-700 transition-all text-white rounded-lg flex gap-2 justify-center items-center outlined-none text-sm"
           onClick={() => signin('github')}
         >
           <GitHub size={20} />
-          Cadastrar-se com o Github
+          Sign up with Github
         </button>
       </div>
       <p className="mt-4 text-xs text-zinc-500">
-        Possui uma conta?
+        Already have an account
         <button
           className="text-teal-600 underline ml-1 hover:text-teal-700 transition-all cursor-pointer"
           onClick={() => router.push('/login')}
         >
-          Logar aqui
+          Sign in here
         </button>
       </p>
     </div>
